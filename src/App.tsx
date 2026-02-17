@@ -40,6 +40,7 @@ export default function App() {
           <NavLink to="/" end>
             ホーム
           </NavLink>
+          <NavLink to="/quiz-home">問題集</NavLink>
           <NavLink to="/study">学習</NavLink>
           <NavLink to="/progress">成績</NavLink>
           <NavLink to="/review">復習</NavLink>

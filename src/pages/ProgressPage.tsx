@@ -21,7 +21,7 @@ export function ProgressPage() {
         </p>
         <button
           className="btn btn-primary"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/quiz-home")}
           type="button"
           style={{ marginTop: 16 }}
         >

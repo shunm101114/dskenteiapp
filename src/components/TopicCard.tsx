@@ -41,6 +41,9 @@ export function TopicCard({ topic, isRead, onToggleRead }: Props) {
             </span>
           )}
           <span>{topic.title}</span>
+          {topic.level === "advanced" && (
+            <span className="topic-level-badge">発展</span>
+          )}
         </span>
         <span className={`topic-card-arrow ${open ? "open" : ""}`}>&#9662;</span>
       </button>

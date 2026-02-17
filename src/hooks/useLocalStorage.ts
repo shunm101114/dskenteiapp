@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { getItem, setItem, removeItem } from "../utils/storage";
+import { syncToServer, removeFromServer } from "../utils/api-storage";
 import { useAuth } from "../contexts/AuthContext";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
@@ -21,6 +22,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
       setStoredValue((prev) => {
         const next = value instanceof Function ? value(prev) : value;
         setItem(uid, key, next);
+        syncToServer(uid, key, next);
         return next;
       });
     },
@@ -29,6 +31,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
   const remove = useCallback(() => {
     removeItem(uid, key);
+    removeFromServer(uid, key);
     setStoredValue(initialValueRef.current);
   }, [uid, key]);
 

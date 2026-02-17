@@ -25,6 +25,29 @@ export function useQuizSession() {
         answers: [],
         categories,
         startedAt: new Date().toISOString(),
+        mode: "quiz",
+      });
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+    },
+    [setSession]
+  );
+
+  const startQuizWithIds = useCallback(
+    (questionIds: string[]) => {
+      const selected = questionIds
+        .map((id) => allQuestions.find((q) => q.id === id))
+        .filter((q): q is Question => q != null);
+      if (selected.length === 0) return;
+
+      const categories = [...new Set(selected.map((q) => q.category))];
+      setSession({
+        questions: selected,
+        currentIndex: 0,
+        answers: [],
+        categories,
+        startedAt: new Date().toISOString(),
+        mode: "quiz",
       });
       setSelectedAnswer(null);
       setShowExplanation(false);
@@ -45,6 +68,7 @@ export function useQuizSession() {
         answers: [],
         categories,
         startedAt: new Date().toISOString(),
+        mode: "review",
       });
       setSelectedAnswer(null);
       setShowExplanation(false);
@@ -132,6 +156,7 @@ export function useQuizSession() {
     showExplanation,
     results,
     startQuiz,
+    startQuizWithIds,
     startReview,
     submitAnswer,
     nextQuestion,

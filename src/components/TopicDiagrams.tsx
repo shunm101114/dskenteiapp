@@ -851,6 +851,511 @@ function DataGovernance() {
   );
 }
 
+// ==================== Additional diagrams ====================
+
+function DataVisualization() {
+  // Histogram bars
+  const histBars = [15, 30, 50, 70, 55, 35, 20];
+  // Scatter points
+  const scatter = [[10,60],[18,50],[25,42],[32,35],[40,25],[48,20],[55,12]];
+  return (
+    <svg viewBox="0 0 480 145" className="topic-diagram">
+      {/* Histogram */}
+      <g transform="translate(0,0)">
+        <text x="75" y="14" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">ヒストグラム</text>
+        <rect x="10" y="20" width="130" height="115" fill="#f8fafc" rx="4" />
+        {histBars.map((h, i) => (
+          <rect key={i} x={18 + i * 17} y={120 - h} width="14" height={h} fill="#93c5fd" stroke="#2563eb" strokeWidth="0.5" rx="1" />
+        ))}
+        <line x1="15" y1="120" x2="140" y2="120" stroke="#64748b" strokeWidth="1" />
+      </g>
+      {/* Scatter */}
+      <g transform="translate(165,0)">
+        <text x="75" y="14" textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">散布図</text>
+        <rect x="10" y="20" width="130" height="115" fill="#f0fdf4" rx="4" />
+        {scatter.map(([x, y], i) => <circle key={i} cx={x + 15} cy={y + 30} r="4" fill="#16a34a" opacity="0.8" />)}
+        <line x1="20" y1="100" x2="120" y2="30" stroke="#16a34a" strokeWidth="1" strokeDasharray="4,3" />
+      </g>
+      {/* Box plot */}
+      <g transform="translate(330,0)">
+        <text x="75" y="14" textAnchor="middle" fontSize="10" fontWeight="600" fill="#9333ea">箱ひげ図</text>
+        <rect x="10" y="20" width="130" height="115" fill="#faf5ff" rx="4" />
+        {/* Whiskers */}
+        <line x1="75" y1="35" x2="75" y2="55" stroke="#9333ea" strokeWidth="1.5" />
+        <line x1="60" y1="35" x2="90" y2="35" stroke="#9333ea" strokeWidth="1.5" />
+        {/* Box */}
+        <rect x="50" y="55" width="50" height="40" fill="#e9d5ff" stroke="#9333ea" strokeWidth="1.5" rx="2" />
+        {/* Median */}
+        <line x1="50" y1="72" x2="100" y2="72" stroke="#9333ea" strokeWidth="2.5" />
+        {/* Lower whisker */}
+        <line x1="75" y1="95" x2="75" y2="115" stroke="#9333ea" strokeWidth="1.5" />
+        <line x1="60" y1="115" x2="90" y2="115" stroke="#9333ea" strokeWidth="1.5" />
+        {/* Labels */}
+        <text x="108" y="40" fontSize="8" fill="#9333ea">max</text>
+        <text x="108" y="60" fontSize="8" fill="#9333ea">Q3</text>
+        <text x="108" y="76" fontSize="8" fill="#9333ea">中央値</text>
+        <text x="108" y="98" fontSize="8" fill="#9333ea">Q1</text>
+        <text x="108" y="118" fontSize="8" fill="#9333ea">min</text>
+      </g>
+    </svg>
+  );
+}
+
+function DataScales() {
+  const scales = [
+    { name: "名義尺度", example: "血液型", color: "#64748b", bg: "#f1f5f9" },
+    { name: "順序尺度", example: "満足度", color: "#f59e0b", bg: "#fef3c7" },
+    { name: "間隔尺度", example: "気温℃", color: "#2563eb", bg: "#dbeafe" },
+    { name: "比率尺度", example: "身長cm", color: "#16a34a", bg: "#dcfce7" },
+  ];
+  return (
+    <svg viewBox="0 0 400 155" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="600" fill="#334155">データの尺度（低 → 高）</text>
+      {scales.map((s, i) => {
+        const x = 20 + i * 95;
+        return (
+          <g key={i}>
+            <rect x={x} y="28" width="85" height="55" fill={s.bg} stroke={s.color} strokeWidth="1.5" rx="8" />
+            <text x={x + 42} y="50" textAnchor="middle" fontSize="10" fontWeight="700" fill={s.color}>{s.name}</text>
+            <text x={x + 42} y="68" textAnchor="middle" fontSize="9" fill="#64748b">例: {s.example}</text>
+            {i < 3 && <text x={x + 90} y="58" textAnchor="middle" fontSize="16" fill="#94a3b8">→</text>}
+          </g>
+        );
+      })}
+      {/* Operations row */}
+      <text x="62" y="102" textAnchor="middle" fontSize="9" fill="#64748b">分類のみ</text>
+      <text x="157" y="102" textAnchor="middle" fontSize="9" fill="#64748b">+ 順序比較</text>
+      <text x="252" y="102" textAnchor="middle" fontSize="9" fill="#64748b">+ 差の計算</text>
+      <text x="347" y="102" textAnchor="middle" fontSize="9" fill="#64748b">+ 比率・四則</text>
+      {/* Bracket */}
+      <line x1="20" y1="115" x2="195" y2="115" stroke="#f59e0b" strokeWidth="1" />
+      <text x="107" y="130" textAnchor="middle" fontSize="9" fontWeight="600" fill="#f59e0b">質的データ</text>
+      <line x1="210" y1="115" x2="395" y2="115" stroke="#2563eb" strokeWidth="1" />
+      <text x="302" y="130" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">量的データ</text>
+    </svg>
+  );
+}
+
+function TransformerSimple() {
+  return (
+    <svg viewBox="0 0 400 180" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">Transformer 簡略構造</text>
+      {/* Input */}
+      <rect x="140" y="145" width="120" height="28" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="6" />
+      <text x="200" y="164" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">入力埋め込み</text>
+      {/* Attention */}
+      <rect x="120" y="90" width="160" height="35" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" rx="6" />
+      <text x="200" y="112" textAnchor="middle" fontSize="10" fontWeight="600" fill="#b45309">Self-Attention</text>
+      {/* FFN */}
+      <rect x="140" y="38" width="120" height="30" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="6" />
+      <text x="200" y="58" textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">Feed Forward</text>
+      {/* Arrows */}
+      <line x1="200" y1="145" x2="200" y2="127" stroke="#64748b" strokeWidth="1.5" markerEnd="url(#arrowT)" />
+      <line x1="200" y1="90" x2="200" y2="70" stroke="#64748b" strokeWidth="1.5" markerEnd="url(#arrowT)" />
+      {/* Attention lines */}
+      <g opacity="0.4">
+        <line x1="145" y1="145" x2="165" y2="127" stroke="#f59e0b" strokeWidth="1" />
+        <line x1="200" y1="145" x2="200" y2="127" stroke="#f59e0b" strokeWidth="1.5" />
+        <line x1="255" y1="145" x2="235" y2="127" stroke="#f59e0b" strokeWidth="1" />
+      </g>
+      {/* Labels */}
+      <text x="310" y="107" fontSize="9" fill="#64748b">Q, K, V で</text>
+      <text x="310" y="119" fontSize="9" fill="#64748b">重要度を計算</text>
+      <text x="30" y="55" fontSize="9" fill="#64748b">×N層</text>
+      <text x="30" y="68" fontSize="9" fill="#64748b">繰り返し</text>
+      {/* Arrow marker */}
+      <defs>
+        <marker id="arrowT" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function OneHotEncoding() {
+  return (
+    <svg viewBox="0 0 400 130" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="600" fill="#334155">One-Hotエンコーディング</text>
+      {/* Original table */}
+      <g transform="translate(20,25)">
+        <text x="35" y="12" textAnchor="middle" fontSize="9" fontWeight="600" fill="#64748b">元データ</text>
+        <rect x="0" y="18" width="70" height="22" fill="#dbeafe" stroke="#2563eb" strokeWidth="1" rx="3" />
+        <text x="35" y="34" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">色</text>
+        {["赤", "青", "緑"].map((v, i) => (
+          <g key={i}>
+            <rect x="0" y={40 + i * 20} width="70" height="20" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="0.5" />
+            <text x="35" y={54 + i * 20} textAnchor="middle" fontSize="10" fill="#334155">{v}</text>
+          </g>
+        ))}
+      </g>
+      {/* Arrow */}
+      <text x="135" y="72" fontSize="20" fill="#64748b">→</text>
+      {/* Encoded table */}
+      <g transform="translate(170,25)">
+        <text x="100" y="12" textAnchor="middle" fontSize="9" fontWeight="600" fill="#64748b">One-Hot変換後</text>
+        {["赤", "青", "緑"].map((v, i) => (
+          <g key={i}>
+            <rect x={i * 67} y="18" width="65" height="22" fill="#dcfce7" stroke="#16a34a" strokeWidth="1" rx="3" />
+            <text x={i * 67 + 32} y="34" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">色_{v}</text>
+          </g>
+        ))}
+        {/* Data rows */}
+        {[[1,0,0],[0,1,0],[0,0,1]].map((row, ri) => (
+          <g key={ri}>
+            {row.map((v, ci) => (
+              <g key={ci}>
+                <rect x={ci * 67} y={40 + ri * 20} width="65" height="20" fill={v ? "#fef3c7" : "#f8fafc"} stroke="#cbd5e1" strokeWidth="0.5" />
+                <text x={ci * 67 + 32} y={54 + ri * 20} textAnchor="middle" fontSize="11" fontWeight={v ? "700" : "400"} fill={v ? "#b45309" : "#94a3b8"}>{v}</text>
+              </g>
+            ))}
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+function PythonBasics() {
+  return (
+    <svg viewBox="0 0 400 140" className="topic-diagram">
+      {/* Variable */}
+      <g>
+        <rect x="15" y="10" width="105" height="55" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="8" />
+        <text x="67" y="30" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">変数</text>
+        <text x="67" y="48" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="monospace">x = 10</text>
+      </g>
+      {/* Arrow */}
+      <text x="135" y="42" fontSize="16" fill="#64748b">→</text>
+      {/* List */}
+      <g>
+        <rect x="150" y="10" width="105" height="55" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="8" />
+        <text x="202" y="30" textAnchor="middle" fontSize="10" fontWeight="700" fill="#16a34a">リスト</text>
+        <text x="202" y="48" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="monospace">[1, 2, 3]</text>
+      </g>
+      {/* Arrow */}
+      <text x="270" y="42" fontSize="16" fill="#64748b">→</text>
+      {/* Function */}
+      <g>
+        <rect x="285" y="10" width="105" height="55" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" rx="8" />
+        <text x="337" y="30" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">関数</text>
+        <text x="337" y="48" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="monospace">def f(x):</text>
+      </g>
+      {/* Bottom: key libs */}
+      <rect x="15" y="80" width="375" height="48" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1" rx="6" />
+      <text x="200" y="98" textAnchor="middle" fontSize="9" fontWeight="600" fill="#64748b">主要ライブラリ</text>
+      {["NumPy", "pandas", "scikit-learn", "matplotlib"].map((lib, i) => (
+        <g key={i}>
+          <rect x={30 + i * 90} y="105" width="75" height="18" fill="#dbeafe" rx="9" />
+          <text x={67 + i * 90} y="118" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">{lib}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function CloudStack() {
+  const layers = [
+    { name: "SaaS", desc: "Gmail, Slack", color: "#16a34a", bg: "#dcfce7", managed: 5 },
+    { name: "PaaS", desc: "App Engine", color: "#2563eb", bg: "#dbeafe", managed: 3 },
+    { name: "IaaS", desc: "EC2, GCE", color: "#9333ea", bg: "#f3e8ff", managed: 1 },
+  ];
+  const items = ["アプリ", "データ", "ランタイム", "OS", "インフラ"];
+  return (
+    <svg viewBox="0 0 400 165" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="600" fill="#334155">クラウドサービスの管理範囲</text>
+      {/* Column headers */}
+      {layers.map((l, i) => (
+        <g key={i}>
+          <rect x={130 + i * 90} y="24" width="80" height="22" fill={l.bg} stroke={l.color} strokeWidth="1.5" rx="4" />
+          <text x={170 + i * 90} y="39" textAnchor="middle" fontSize="10" fontWeight="700" fill={l.color}>{l.name}</text>
+        </g>
+      ))}
+      {/* Row labels & cells */}
+      {items.map((item, ri) => {
+        const y = 54 + ri * 22;
+        return (
+          <g key={ri}>
+            <text x="65" y={y + 15} textAnchor="middle" fontSize="9" fill="#334155">{item}</text>
+            {layers.map((l, ci) => {
+              const managed = ri < l.managed;
+              return (
+                <rect key={ci} x={130 + ci * 90} y={y} width="80" height="20"
+                  fill={managed ? l.bg : "#fee2e2"} stroke="#e2e8f0" strokeWidth="0.5" />
+              );
+            })}
+          </g>
+        );
+      })}
+      {/* Legend */}
+      <rect x="130" y="148" width="12" height="10" fill="#dcfce7" stroke="#e2e8f0" strokeWidth="0.5" />
+      <text x="147" y="157" fontSize="8" fill="#64748b">提供者が管理</text>
+      <rect x="230" y="148" width="12" height="10" fill="#fee2e2" stroke="#e2e8f0" strokeWidth="0.5" />
+      <text x="247" y="157" fontSize="8" fill="#64748b">利用者が管理</text>
+    </svg>
+  );
+}
+
+function MeceLogicTree() {
+  return (
+    <svg viewBox="0 0 420 155" className="topic-diagram">
+      {/* MECE side */}
+      <text x="100" y="14" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">MECE（漏れなくダブりなく）</text>
+      <circle cx="70" cy="55" r="28" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" />
+      <circle cx="130" cy="55" r="28" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" />
+      <text x="60" y="58" textAnchor="middle" fontSize="11" fontWeight="600" fill="#2563eb">A</text>
+      <text x="140" y="58" textAnchor="middle" fontSize="11" fontWeight="600" fill="#16a34a">B</text>
+      <text x="100" y="100" textAnchor="middle" fontSize="9" fill="#dc2626">重複なし・漏れなし</text>
+      {/* Logic tree side */}
+      <g transform="translate(220,0)">
+        <text x="90" y="14" textAnchor="middle" fontSize="10" fontWeight="700" fill="#9333ea">ロジックツリー</text>
+        {/* Root */}
+        <rect x="55" y="22" width="70" height="22" fill="#f3e8ff" stroke="#9333ea" strokeWidth="1.5" rx="4" />
+        <text x="90" y="37" textAnchor="middle" fontSize="9" fontWeight="600" fill="#9333ea">課題</text>
+        {/* Level 1 */}
+        <line x1="90" y1="44" x2="40" y2="60" stroke="#9333ea" strokeWidth="1" />
+        <line x1="90" y1="44" x2="140" y2="60" stroke="#9333ea" strokeWidth="1" />
+        <rect x="10" y="60" width="60" height="20" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1" rx="3" />
+        <text x="40" y="74" textAnchor="middle" fontSize="8" fill="#b45309">原因A</text>
+        <rect x="110" y="60" width="60" height="20" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1" rx="3" />
+        <text x="140" y="74" textAnchor="middle" fontSize="8" fill="#b45309">原因B</text>
+        {/* Level 2 */}
+        <line x1="40" y1="80" x2="20" y2="96" stroke="#f59e0b" strokeWidth="0.8" />
+        <line x1="40" y1="80" x2="60" y2="96" stroke="#f59e0b" strokeWidth="0.8" />
+        <rect x="2" y="96" width="38" height="18" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="0.5" rx="2" />
+        <text x="21" y="108" textAnchor="middle" fontSize="7" fill="#64748b">A-1</text>
+        <rect x="42" y="96" width="38" height="18" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="0.5" rx="2" />
+        <text x="61" y="108" textAnchor="middle" fontSize="7" fill="#64748b">A-2</text>
+        <line x1="140" y1="80" x2="120" y2="96" stroke="#f59e0b" strokeWidth="0.8" />
+        <line x1="140" y1="80" x2="160" y2="96" stroke="#f59e0b" strokeWidth="0.8" />
+        <rect x="102" y="96" width="38" height="18" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="0.5" rx="2" />
+        <text x="121" y="108" textAnchor="middle" fontSize="7" fill="#64748b">B-1</text>
+        <rect x="142" y="96" width="38" height="18" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="0.5" rx="2" />
+        <text x="161" y="108" textAnchor="middle" fontSize="7" fill="#64748b">B-2</text>
+      </g>
+    </svg>
+  );
+}
+
+function PrepMethod() {
+  const steps = [
+    { label: "Point", desc: "結論", color: "#dc2626", bg: "#fee2e2" },
+    { label: "Reason", desc: "理由", color: "#f59e0b", bg: "#fef3c7" },
+    { label: "Example", desc: "具体例", color: "#2563eb", bg: "#dbeafe" },
+    { label: "Point", desc: "結論(再)", color: "#dc2626", bg: "#fee2e2" },
+  ];
+  return (
+    <svg viewBox="0 0 400 100" className="topic-diagram">
+      <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">PREP法</text>
+      {steps.map((s, i) => {
+        const x = 15 + i * 98;
+        return (
+          <g key={i}>
+            <rect x={x} y="25" width="85" height="50" fill={s.bg} stroke={s.color} strokeWidth="1.5" rx="8" />
+            <text x={x + 42} y="46" textAnchor="middle" fontSize="12" fontWeight="700" fill={s.color}>{s.label[0]}</text>
+            <text x={x + 42} y="62" textAnchor="middle" fontSize="9" fill="#334155">{s.label}</text>
+            <text x={x + 42} y="86" textAnchor="middle" fontSize="9" fill="#64748b">{s.desc}</text>
+            {i < 3 && <text x={x + 92} y="52" fontSize="14" fill="#94a3b8">→</text>}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function SpuriousCorrelation() {
+  return (
+    <svg viewBox="0 0 400 150" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">疑似相関と交絡因子</text>
+      {/* Confounding variable */}
+      <rect x="145" y="30" width="110" height="30" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2" rx="8" />
+      <text x="200" y="50" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">交絡因子（気温）</text>
+      {/* Variable A */}
+      <rect x="25" y="95" width="130" height="30" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="8" />
+      <text x="90" y="115" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">アイス売上</text>
+      {/* Variable B */}
+      <rect x="245" y="95" width="130" height="30" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5" rx="8" />
+      <text x="310" y="115" textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">水難事故</text>
+      {/* Causal arrows from confounder */}
+      <line x1="170" y1="62" x2="100" y2="93" stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#arrowSC)" />
+      <line x1="230" y1="62" x2="300" y2="93" stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#arrowSC)" />
+      <text x="110" y="76" fontSize="8" fill="#f59e0b">因果</text>
+      <text x="280" y="76" fontSize="8" fill="#f59e0b">因果</text>
+      {/* Spurious correlation */}
+      <line x1="155" y1="110" x2="245" y2="110" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" />
+      <text x="200" y="142" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">見かけの相関（疑似相関）</text>
+      <defs>
+        <marker id="arrowSC" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#f59e0b" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function TTestDiagram() {
+  // Two overlapping distributions
+  const cx1 = 140, cx2 = 260, cy = 100, sx = 35, sy = -180;
+  const curve = (cx: number) => {
+    const pts: string[] = [];
+    for (let x = -3; x <= 3; x += 0.15) {
+      const y = Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+      pts.push(`${pts.length === 0 ? "M" : "L"}${cx + x * sx},${cy + y * sy}`);
+    }
+    return pts.join(" ");
+  };
+  return (
+    <svg viewBox="0 0 400 150" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">t検定：2群の平均の比較</text>
+      {/* Group A */}
+      <path d={curve(cx1)} fill="none" stroke="#2563eb" strokeWidth="2" />
+      <path d={`${curve(cx1)} L${cx1 + 3 * sx},${cy} L${cx1 - 3 * sx},${cy} Z`} fill="#2563eb" opacity="0.15" />
+      {/* Group B */}
+      <path d={curve(cx2)} fill="none" stroke="#dc2626" strokeWidth="2" />
+      <path d={`${curve(cx2)} L${cx2 + 3 * sx},${cy} L${cx2 - 3 * sx},${cy} Z`} fill="#dc2626" opacity="0.15" />
+      {/* Axis */}
+      <line x1="30" y1={cy} x2="370" y2={cy} stroke="#64748b" strokeWidth="1" />
+      {/* Mean markers */}
+      <line x1={cx1} y1={cy - 5} x2={cx1} y2={cy + 5} stroke="#2563eb" strokeWidth="2" />
+      <line x1={cx2} y1={cy - 5} x2={cx2} y2={cy + 5} stroke="#dc2626" strokeWidth="2" />
+      <text x={cx1} y={cy + 18} textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">x̄₁</text>
+      <text x={cx2} y={cy + 18} textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">x̄₂</text>
+      {/* Difference arrow */}
+      <line x1={cx1} y1={cy + 28} x2={cx2} y2={cy + 28} stroke="#334155" strokeWidth="1.5" markerEnd="url(#arrowTT)" markerStart="url(#arrowTTr)" />
+      <text x="200" y={cy + 42} textAnchor="middle" fontSize="9" fill="#334155">差が有意か？→ p値で判定</text>
+      {/* Labels */}
+      <text x={cx1} y="28" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">群A</text>
+      <text x={cx2} y="28" textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">群B</text>
+      <defs>
+        <marker id="arrowTT" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <path d="M0,0 L6,2.5 L0,5" fill="#334155" />
+        </marker>
+        <marker id="arrowTTr" markerWidth="6" markerHeight="5" refX="0" refY="2.5" orient="auto">
+          <path d="M6,0 L0,2.5 L6,5" fill="#334155" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function CnnFlow() {
+  return (
+    <svg viewBox="0 0 420 120" className="topic-diagram">
+      {/* Input image */}
+      <rect x="10" y="25" width="55" height="55" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="4" />
+      <g>
+        {[0,1,2,3,4].map(r => [0,1,2,3,4].map(c => (
+          <rect key={`${r}-${c}`} x={14 + c * 10} y={29 + r * 10} width="8" height="8" fill={Math.random() > 0.5 ? "#93c5fd" : "#dbeafe"} rx="1" />
+        )))}
+      </g>
+      <text x="37" y="95" textAnchor="middle" fontSize="8" fill="#2563eb">入力画像</text>
+      {/* Arrow */}
+      <text x="75" y="55" fontSize="12" fill="#64748b">→</text>
+      {/* Conv */}
+      <rect x="90" y="20" width="70" height="65" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" rx="6" />
+      <text x="125" y="42" textAnchor="middle" fontSize="9" fontWeight="600" fill="#b45309">畳み込み</text>
+      <text x="125" y="55" textAnchor="middle" fontSize="8" fill="#64748b">特徴抽出</text>
+      <rect x="100" y="60" width="15" height="15" fill="#fcd34d" stroke="#f59e0b" strokeWidth="1" rx="2" />
+      <text x="125" y="72" fontSize="7" fill="#b45309">フィルタ</text>
+      <text x="125" y="95" textAnchor="middle" fontSize="8" fill="#f59e0b">Conv層</text>
+      {/* Arrow */}
+      <text x="170" y="55" fontSize="12" fill="#64748b">→</text>
+      {/* Pooling */}
+      <rect x="185" y="25" width="65" height="55" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="6" />
+      <text x="217" y="47" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">プーリング</text>
+      <text x="217" y="62" textAnchor="middle" fontSize="8" fill="#64748b">圧縮</text>
+      <text x="217" y="95" textAnchor="middle" fontSize="8" fill="#16a34a">Pool層</text>
+      {/* Arrow */}
+      <text x="260" y="55" fontSize="12" fill="#64748b">→</text>
+      {/* Repeat indicator */}
+      <text x="280" y="50" fontSize="9" fill="#64748b">...×N</text>
+      <text x="300" y="55" fontSize="12" fill="#64748b">→</text>
+      {/* FC */}
+      <rect x="315" y="25" width="60" height="55" fill="#f3e8ff" stroke="#9333ea" strokeWidth="1.5" rx="6" />
+      <text x="345" y="47" textAnchor="middle" fontSize="9" fontWeight="600" fill="#9333ea">全結合</text>
+      <text x="345" y="62" textAnchor="middle" fontSize="8" fill="#64748b">分類</text>
+      <text x="345" y="95" textAnchor="middle" fontSize="8" fill="#9333ea">FC層</text>
+      {/* Output */}
+      <text x="385" y="55" fontSize="12" fill="#64748b">→</text>
+      <text x="412" y="45" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">犬</text>
+      <text x="412" y="60" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">猫</text>
+    </svg>
+  );
+}
+
+function AttentionDiagram() {
+  const words = ["I", "love", "cats"];
+  // Attention weights (example)
+  const weights = [
+    [0.1, 0.2, 0.7],
+    [0.1, 0.6, 0.3],
+    [0.5, 0.1, 0.4],
+  ];
+  return (
+    <svg viewBox="0 0 400 160" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">Self-Attention の概念</text>
+      {/* Input words */}
+      {words.map((w, i) => (
+        <g key={i}>
+          <rect x={60 + i * 100} y="28" width="70" height="24" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="6" />
+          <text x={95 + i * 100} y="44" textAnchor="middle" fontSize="11" fontWeight="600" fill="#2563eb">{w}</text>
+        </g>
+      ))}
+      {/* Attention weight matrix */}
+      <text x="55" y="76" textAnchor="end" fontSize="9" fill="#64748b">注目度:</text>
+      {weights.map((row, ri) => (
+        <g key={ri}>
+          {row.map((w, ci) => {
+            const x = 60 + ci * 100;
+            const y = 65 + ri * 25;
+            return (
+              <rect key={ci} x={x} y={y} width="70" height="22" fill="#fef3c7" stroke="#f59e0b" strokeWidth="0.5" rx="3" opacity={0.3 + w * 0.7} />
+            );
+          })}
+          {row.map((w, ci) => (
+            <text key={ci} x={95 + ci * 100} y={80 + ri * 25} textAnchor="middle" fontSize="10" fill="#b45309">{w.toFixed(1)}</text>
+          ))}
+        </g>
+      ))}
+      {/* Labels */}
+      <text x="200" y="152" textAnchor="middle" fontSize="9" fill="#64748b">各単語が他の単語にどれだけ注目するかを重みで表現</text>
+    </svg>
+  );
+}
+
+function StarSchema() {
+  return (
+    <svg viewBox="0 0 400 180" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">スタースキーマ</text>
+      {/* Fact table (center) */}
+      <rect x="145" y="65" width="110" height="50" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" rx="8" />
+      <text x="200" y="85" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">ファクト表</text>
+      <text x="200" y="100" textAnchor="middle" fontSize="8" fill="#64748b">売上データ</text>
+      {/* Dimension tables */}
+      {[
+        { x: 15, y: 20, label: "商品", angle: "topLeft" },
+        { x: 285, y: 20, label: "日付", angle: "topRight" },
+        { x: 15, y: 120, label: "店舗", angle: "bottomLeft" },
+        { x: 285, y: 120, label: "顧客", angle: "bottomRight" },
+      ].map((dim, i) => (
+        <g key={i}>
+          <rect x={dim.x} y={dim.y} width="95" height="40" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="6" />
+          <text x={dim.x + 47} y={dim.y + 25} textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">{dim.label}Dim</text>
+          {/* Connect to center */}
+          <line
+            x1={dim.x + (dim.x < 200 ? 95 : 0)}
+            y1={dim.y + 20}
+            x2={dim.x < 200 ? 145 : 255}
+            y2={dim.y < 90 ? 75 : 105}
+            stroke="#16a34a" strokeWidth="1.5" strokeDasharray="4,2"
+          />
+        </g>
+      ))}
+      <text x="200" y="175" textAnchor="middle" fontSize="9" fill="#64748b">中心にファクト表、周囲にディメンション表を配置</text>
+    </svg>
+  );
+}
+
 // ==================== Main export ====================
 const diagramMap: Record<string, () => ReactNode> = {
   "math-topic-01": NormalDistribution,
@@ -859,23 +1364,37 @@ const diagramMap: Record<string, () => ReactNode> = {
   "math-topic-04": CorrelationScatter,
   "math-topic-05": MatrixBasics,
   "math-topic-06": ProbDistributions,
+  "math-topic-07": DataVisualization,
+  "math-topic-10": DataScales,
   "ml-topic-01": LearningTypes,
   "ml-topic-02": NeuralNetwork,
   "ml-topic-03": EnsembleLearning,
   "ml-topic-04": ConfusionMatrix,
   "ml-topic-05": DimensionReduction,
   "ml-topic-06": BiasVariance,
+  "ml-topic-09": TransformerSimple,
+  "ml-topic-10": OneHotEncoding,
   "de-topic-01": SqlJoins,
   "de-topic-02": Normalization,
   "de-topic-03": CapTheorem,
   "de-topic-04": EtlPipeline,
   "de-topic-05": RestApi,
   "de-topic-06": DataQuality,
+  "de-topic-07": PythonBasics,
+  "de-topic-10": CloudStack,
+  "de-topic-27": StarSchema,
   "biz-topic-01": CrispDm,
   "biz-topic-02": KpiTree,
   "biz-topic-03": DataEthics,
   "biz-topic-04": RfmAnalysis,
   "biz-topic-05": DataGovernance,
+  "biz-topic-06": MeceLogicTree,
+  "biz-topic-08": PrepMethod,
+  "biz-topic-09": SpuriousCorrelation,
+  "ds-topic-05": TTestDiagram,
+  "ds-topic-26": ConfusionMatrix,
+  "ds-topic-32": CnnFlow,
+  "ds-topic-34": AttentionDiagram,
 };
 
 export function TopicDiagram({ topicId }: { topicId: string }) {

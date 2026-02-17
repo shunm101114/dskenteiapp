@@ -16,7 +16,7 @@ export function QuizPage() {
   const navigate = useNavigate();
 
   if (!session || !currentQuestion || !progress) {
-    navigate("/", { replace: true });
+    navigate("/quiz-home", { replace: true });
     return null;
   }
 

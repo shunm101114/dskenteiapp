@@ -1,12 +1,33 @@
 import { useState, useCallback, useMemo } from "react";
 import type { Category } from "../types";
-import { CATEGORIES } from "../types";
+import { CATEGORIES, DS_SUBCATEGORIES, DE_SUBCATEGORIES, BIZ_SUBCATEGORIES } from "../types";
 import { allStudyTopics as studyTopics } from "../data/all-study-topics";
+import { dsSubcategoryMap, deSubcategoryMap, bizSubcategoryMap } from "../data/ds-subcategory-map";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { TopicCard } from "../components/TopicCard";
 
+/** Map from category to its subcategory list */
+const SUBCATEGORY_LIST: Record<Category, readonly string[]> = {
+  "データサイエンス力": DS_SUBCATEGORIES,
+  "データエンジニアリング力": DE_SUBCATEGORIES,
+  "ビジネス力": BIZ_SUBCATEGORIES,
+};
+
+/** Combined subcategory map for all categories */
+const subcategoryMap: Record<string, string> = {
+  ...dsSubcategoryMap,
+  ...deSubcategoryMap,
+  ...bizSubcategoryMap,
+};
+
+/** Resolve subcategory: use topic.subcategory first, fall back to map */
+function getSubcategory(topic: { id: string; subcategory?: string }): string | undefined {
+  return topic.subcategory ?? subcategoryMap[topic.id];
+}
+
 export function StudyPage() {
   const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0]);
+  const [activeSub, setActiveSub] = useState<string | null>(null);
   const [readTopics, setReadTopics] = useLocalStorage<string[]>("readTopics", []);
 
   const filtered = studyTopics.filter((t) => t.category === activeCategory);
@@ -36,6 +57,29 @@ export function StudyPage() {
   const totalTopics = studyTopics.length;
   const readPercent = totalTopics === 0 ? 0 : Math.round((totalRead / totalTopics) * 100);
 
+  // Subcategory support for all categories
+  const subcategories = SUBCATEGORY_LIST[activeCategory];
+
+  const subcategoryCounts = useMemo(() => {
+    const counts: Record<string, { read: number; total: number }> = {};
+    for (const sub of subcategories) {
+      const subTopics = filtered.filter((t) => getSubcategory(t) === sub);
+      const readCount = subTopics.filter((t) => readSet.has(t.id)).length;
+      counts[sub] = { read: readCount, total: subTopics.length };
+    }
+    return counts;
+  }, [subcategories, filtered, readSet]);
+
+  const displayTopics = useMemo(() => {
+    if (!activeSub) return filtered;
+    return filtered.filter((t) => getSubcategory(t) === activeSub);
+  }, [activeSub, filtered]);
+
+  const handleCategoryChange = (cat: Category) => {
+    setActiveCategory(cat);
+    setActiveSub(null);
+  };
+
   return (
     <>
       <h2 className="section-title">学習</h2>
@@ -58,6 +102,7 @@ export function StudyPage() {
         </div>
       </div>
 
+      {/* Category tabs */}
       <div className="study-tabs">
         {CATEGORIES.map((cat) => {
           const c = categoryReadCounts[cat];
@@ -65,7 +110,7 @@ export function StudyPage() {
             <button
               key={cat}
               className={`study-tab ${activeCategory === cat ? "active" : ""}`}
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => handleCategoryChange(cat)}
               type="button"
             >
               {cat} ({c.read}/{c.total})
@@ -74,8 +119,34 @@ export function StudyPage() {
         })}
       </div>
 
+      {/* Subcategory chips */}
+      <div className="study-sub-chips">
+        <button
+          className={`study-sub-chip ${activeSub === null ? "active" : ""}`}
+          onClick={() => setActiveSub(null)}
+          type="button"
+        >
+          すべて ({filtered.length})
+        </button>
+        {subcategories.map((sub) => {
+          const c = subcategoryCounts[sub];
+          if (!c || c.total === 0) return null;
+          return (
+            <button
+              key={sub}
+              className={`study-sub-chip ${activeSub === sub ? "active" : ""}`}
+              onClick={() => setActiveSub(sub)}
+              type="button"
+            >
+              {sub}
+              <span className="study-sub-chip-count">{c.read}/{c.total}</span>
+            </button>
+          );
+        })}
+      </div>
+
       <div>
-        {filtered.map((topic) => (
+        {displayTopics.map((topic) => (
           <TopicCard
             key={topic.id}
             topic={topic}

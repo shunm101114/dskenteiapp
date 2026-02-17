@@ -88,6 +88,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "math-topic-16",
     category: "データサイエンス力",
     title: "確率過程とマルコフ連鎖",
+    level: "advanced",
     points: [
       "確率過程: 時間とともに変化する確率変数の系列",
       "マルコフ性: 次の状態が現在の状態のみに依存する（無記憶性）",
@@ -119,6 +120,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "math-topic-18",
     category: "データサイエンス力",
     title: "生存時間分析",
+    level: "advanced",
     points: [
       "生存関数 S(t): 時刻tまで事象が起きない確率",
       "カプラン・マイヤー推定量: 打ち切りデータを扱える生存関数の推定法",
@@ -197,6 +199,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "math-topic-23",
     category: "データサイエンス力",
     title: "ロバスト統計学",
+    level: "advanced",
     points: [
       "ロバスト統計: 外れ値や分布の仮定からの逸脱に強い手法",
       "中央値は平均値より外れ値に対してロバスト",
@@ -306,6 +309,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "ml-topic-15",
     category: "データサイエンス力",
     title: "グラフニューラルネットワーク（GNN）",
+    level: "advanced",
     points: [
       "グラフ構造（ノードとエッジ）を持つデータに対するニューラルネットワーク",
       "GCN（Graph Convolutional Network）: 近傍ノードの特徴を集約する畳み込み",
@@ -336,6 +340,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "ml-topic-17",
     category: "データサイエンス力",
     title: "半教師あり学習と自己教師あり学習",
+    level: "advanced",
     points: [
       "半教師あり学習: 少量のラベル付きデータと大量のラベルなしデータを組み合わせて学習",
       "疑似ラベル法: ラベルなしデータにモデルの予測をラベルとして付与し再学習",
@@ -351,6 +356,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "ml-topic-18",
     category: "データサイエンス力",
     title: "フェデレーテッドラーニング（連合学習）",
+    level: "advanced",
     points: [
       "データを集中管理せず、各端末・組織でローカルにモデルを学習",
       "モデルのパラメータ（勾配）のみをサーバーに送信して集約",
@@ -366,6 +372,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "ml-topic-19",
     category: "データサイエンス力",
     title: "敵対的攻撃とモデルのロバスト性",
+    level: "advanced",
     points: [
       "敵対的サンプル: 微小な摂動を加えてモデルを誤分類させるデータ",
       "FGSM（Fast Gradient Sign Method）: 勾配の符号方向に摂動を加える攻撃手法",
@@ -381,6 +388,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "ml-topic-20",
     category: "データサイエンス力",
     title: "モデル軽量化と推論の高速化",
+    level: "advanced",
     points: [
       "量子化: モデルの重みを32bitから8bit/4bitに低精度化して高速化",
       "知識蒸留: 大きな教師モデルの知識を小さな生徒モデルに転移",
@@ -580,6 +588,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "de-topic-20",
     category: "データエンジニアリング力",
     title: "監視・アラートとSRE",
+    level: "advanced",
     points: [
       "SLI/SLO/SLA: 指標→社内目標→顧客との合意の3層構造",
       "オブザーバビリティの3本柱: メトリクス、ログ、トレース",
@@ -595,6 +604,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "de-topic-21",
     category: "データエンジニアリング力",
     title: "ベクトルデータベースとセマンティック検索",
+    level: "advanced",
     points: [
       "ベクトルDB: 埋め込みベクトルを保存し類似検索（ANN）を高速実行",
       "ANN（近似最近傍探索）: HNSW、IVFなどのインデックスアルゴリズム",
@@ -640,6 +650,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "de-topic-24",
     category: "データエンジニアリング力",
     title: "高度なSQL技法",
+    level: "advanced",
     points: [
       "ウィンドウ関数: ROW_NUMBER、RANK、DENSE_RANK、LAG、LEADなど",
       "LATERAL JOIN: サブクエリが左側テーブルの各行を参照できる相関結合",
@@ -655,6 +666,7 @@ export const studyTopicsExtra: StudyTopic[] = [
     id: "de-topic-25",
     category: "データエンジニアリング力",
     title: "Infrastructure as Codeとデータ基盤の自動化",
+    level: "advanced",
     points: [
       "Terraform: 宣言的なHCLでインフラを定義（マルチクラウド対応）",
       "CloudFormation: AWSのIaCサービス（YAML/JSON形式）",
