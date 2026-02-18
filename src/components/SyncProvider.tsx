@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { fetchAllUserData } from "../utils/api-storage";
 import { setItem } from "../utils/storage";
+import { useAccessLog } from "../hooks/useAccessLog";
 
 /**
  * On mount (when logged in), fetches all user data from the server
@@ -14,6 +15,8 @@ import { setItem } from "../utils/storage";
 export function SyncProvider({ children }: { children: ReactNode }) {
   const { userId } = useAuth();
   const [ready, setReady] = useState(false);
+
+  useAccessLog();
 
   useEffect(() => {
     if (!userId) {

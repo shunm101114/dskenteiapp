@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { Analytics } from "@vercel/analytics/react";
 import "./index.css";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { SyncProvider } from "./components/SyncProvider";
@@ -13,6 +14,7 @@ import { ResultPage } from "./pages/ResultPage";
 import { ReviewPage } from "./pages/ReviewPage";
 import { ProgressPage } from "./pages/ProgressPage";
 import { StudyPage } from "./pages/StudyPage";
+import { AdminLogPage } from "./pages/AdminLogPage";
 
 function Root() {
   const { userId } = useAuth();
@@ -33,6 +35,7 @@ function Root() {
             <Route path="result" element={<ResultPage />} />
             <Route path="review" element={<ReviewPage />} />
             <Route path="progress" element={<ProgressPage />} />
+            <Route path="admin/logs" element={<AdminLogPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -44,6 +47,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
       <Root />
+      <Analytics />
     </AuthProvider>
   </StrictMode>
 );
