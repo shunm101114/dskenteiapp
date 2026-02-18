@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
+import { ReloadPrompt } from "./components/ReloadPrompt";
 import "./index.css";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { SyncProvider } from "./components/SyncProvider";
@@ -48,6 +49,7 @@ createRoot(document.getElementById("root")!).render(
     <AuthProvider>
       <Root />
       <Analytics />
+      <ReloadPrompt />
     </AuthProvider>
   </StrictMode>
 );
