@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import type { Question, AnswerRecord, Category, QuizResult, QuizSession } from "../types";
-import { shuffle } from "../utils/shuffle";
+import { shuffle, shuffleChoices } from "../utils/shuffle";
 import { allQuestions } from "../data/all-questions";
 import { useLocalStorage } from "./useLocalStorage";
 
@@ -17,7 +17,7 @@ export function useQuizSession() {
       );
       const shuffled = shuffle(filtered);
       const count = questionCount ?? Math.min(shuffled.length, 10);
-      const selected = shuffled.slice(0, count);
+      const selected = shuffled.slice(0, count).map(shuffleChoices);
 
       setSession({
         questions: selected,
@@ -42,7 +42,7 @@ export function useQuizSession() {
 
       const categories = [...new Set(selected.map((q) => q.category))];
       setSession({
-        questions: selected,
+        questions: selected.map(shuffleChoices),
         currentIndex: 0,
         answers: [],
         categories,
@@ -58,7 +58,7 @@ export function useQuizSession() {
   const startReview = useCallback(
     (questionIds: string[]) => {
       const filtered = allQuestions.filter((q) => questionIds.includes(q.id));
-      const shuffled = shuffle(filtered);
+      const shuffled = shuffle(filtered).map(shuffleChoices);
       if (shuffled.length === 0) return;
 
       const categories = [...new Set(shuffled.map((q) => q.category))];
