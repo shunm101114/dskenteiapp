@@ -52,7 +52,7 @@ function SqlJoins() {
 
 function Normalization() {
   return (
-    <svg viewBox="0 0 400 145" className="topic-diagram">
+    <svg viewBox="0 0 400 150" className="topic-diagram">
       <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">正規化のステップ</text>
       {[
         { label: "第1正規形", sub: "繰り返し排除", color: "#dbeafe", border: "#2563eb", x: 20 },
@@ -70,9 +70,9 @@ function Normalization() {
         <text x="0" y="0" fontSize="10" fontWeight="600" fill="#334155">ACID特性:</text>
         {["Atomicity\n(原子性)", "Consistency\n(一貫性)", "Isolation\n(分離性)", "Durability\n(耐久性)"].map((label, i) => (
           <g key={i}>
-            <rect x={70 + i * 80} y={-12} width="72" height="28" fill="#f1f5f9" rx="4" stroke="#e2e8f0" strokeWidth="1" />
-            <text x={70 + i * 80 + 36} y={8} textAnchor="middle" fontSize="8" fill="#334155">{label.split("\n")[0]}</text>
-            <text x={70 + i * 80 + 36} y="30" textAnchor="middle" fontSize="8" fill="#64748b">{label.split("\n")[1]}</text>
+            <rect x={70 + i * 80} y={-12} width="72" height="42" fill="#f1f5f9" rx="4" stroke="#e2e8f0" strokeWidth="1" />
+            <text x={70 + i * 80 + 36} y={6} textAnchor="middle" fontSize="8" fill="#334155">{label.split("\n")[0]}</text>
+            <text x={70 + i * 80 + 36} y="22" textAnchor="middle" fontSize="8" fill="#64748b">{label.split("\n")[1]}</text>
           </g>
         ))}
       </g>
@@ -125,10 +125,10 @@ function EtlPipeline() {
       </g>
       {stages.map((s, i) => (
         <g key={i}>
-          <rect x={80 + i * 100} y="38" width="82" height="44" fill={s.color} rx="10" stroke={s.border} strokeWidth="2" />
-          <text x={121 + i * 100} y="56" textAnchor="middle" fontSize="16" fontWeight="800" fill={s.border}>{s.icon}</text>
+          <rect x={80 + i * 100} y="34" width="82" height="56" fill={s.color} rx="10" stroke={s.border} strokeWidth="2" />
+          <text x={121 + i * 100} y="55" textAnchor="middle" fontSize="16" fontWeight="800" fill={s.border}>{s.icon}</text>
           <text x={121 + i * 100} y="72" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">{s.label}</text>
-          <text x={121 + i * 100} y="94" textAnchor="middle" fontSize="9" fill="#64748b">{s.sub}</text>
+          <text x={121 + i * 100} y="84" textAnchor="middle" fontSize="8" fill="#64748b">{s.sub}</text>
           {i < 2 && <text x={162 + i * 100} y="64" fontSize="16" fill="#94a3b8">→</text>}
         </g>
       ))}
@@ -476,7 +476,7 @@ function LakehouseArchitectureDiagram() {
   ];
   const layerLabels = ["Storage", "Processing", "Analytics"];
   return (
-    <svg viewBox="0 0 420 195" className="topic-diagram">
+    <svg viewBox="0 0 420 210" className="topic-diagram">
       <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">データレイクハウス・アーキテクチャ</text>
       {/* Layer labels on left */}
       {layerLabels.map((ll, i) => (
@@ -537,11 +537,13 @@ function MessageQueueDiagram() {
       {/* Queue */}
       <rect x="135" y="55" width="150" height="50" fill="#fef3c7" rx="8" stroke="#f59e0b" strokeWidth="2" />
       <text x="210" y="72" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">Queue</text>
-      {/* Queue items */}
+      {/* Queue items – individual labels centered in each rect */}
       {[0, 1, 2, 3, 4].map((i) => (
-        <rect key={i} x={145 + i * 27} y="82" width="22" height="14" fill="#fde68a" rx="2" stroke="#f59e0b" strokeWidth="1" />
+        <g key={i}>
+          <rect x={145 + i * 27} y="82" width="22" height="14" fill="#fde68a" rx="2" stroke="#f59e0b" strokeWidth="1" />
+          <text x={156 + i * 27} y="93" textAnchor="middle" fontSize="7" fill="#b45309">msg</text>
+        </g>
       ))}
-      <text x="210" y="92" textAnchor="middle" fontSize="7" fill="#b45309">msg msg msg msg msg</text>
       {/* Consumers */}
       {[0, 1].map((i) => (
         <g key={i}>
@@ -828,27 +830,27 @@ function AlgorithmComplexityDiagram() {
   ];
 
   return (
-    <svg viewBox="0 0 420 200" className="topic-diagram">
+    <svg viewBox="0 0 420 220" className="topic-diagram">
       <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">計算量（オーダー記法）</text>
       {/* Axes */}
       <line x1={chartX} y1={chartY} x2={chartX} y2={chartY + chartH} stroke="#334155" strokeWidth="1.5" />
       <line x1={chartX} y1={chartY + chartH} x2={chartX + chartW} y2={chartY + chartH} stroke="#334155" strokeWidth="1.5" />
       <text x={chartX + chartW / 2} y={chartY + chartH + 16} textAnchor="middle" fontSize="9" fill="#334155">データ数 (n)</text>
-      <text x={chartX - 8} y={chartY + chartH / 2} textAnchor="middle" fontSize="8" fill="#334155" transform={`rotate(-90,${chartX - 8},${chartY + chartH / 2})`}>処理時間</text>
+      <text x={chartX - 18} y={chartY + chartH / 2} textAnchor="middle" fontSize="8" fill="#334155" transform={`rotate(-90,${chartX - 18},${chartY + chartH / 2})`}>処理時間</text>
       {/* Curves */}
       {curves.map((c, i) => (
         <polyline key={i} points={c.points} fill="none" stroke={c.color} strokeWidth="2" />
       ))}
-      {/* Legend */}
+      {/* Legend – placed below chart in a horizontal row */}
       {curves.map((c, i) => (
         <g key={i}>
-          <line x1="374" y1={30 + i * 16} x2="392" y2={30 + i * 16} stroke={c.color} strokeWidth="2" />
-          <text x="396" y={34 + i * 16} fontSize="8" fontWeight="600" fill={c.color}>{c.label}</text>
+          <line x1={30 + i * 80} y1="178" x2={48 + i * 80} y2="178" stroke={c.color} strokeWidth="2" />
+          <text x={52 + i * 80} y="182" fontSize="8" fontWeight="600" fill={c.color}>{c.label}</text>
         </g>
       ))}
       {/* Annotation */}
-      <rect x="80" y="172" width="260" height="20" fill="#fee2e2" rx="4" />
-      <text x="210" y="186" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">n=10,000: O(n)=1万回 / O(n²)=1億回</text>
+      <rect x="80" y="194" width="260" height="20" fill="#fee2e2" rx="4" />
+      <text x="210" y="208" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">n=10,000: O(n)=1万回 / O(n²)=1億回</text>
     </svg>
   );
 }

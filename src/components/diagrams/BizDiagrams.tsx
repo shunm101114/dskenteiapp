@@ -131,18 +131,18 @@ function RfmAnalysis() {
 
 function DataGovernance() {
   return (
-    <svg viewBox="0 0 400 180" className="topic-diagram">
+    <svg viewBox="0 0 400 190" className="topic-diagram">
       <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">DS人材の3つのスキル領域</text>
-      <circle cx="170" cy="78" r="48" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" opacity="0.5" />
-      <circle cx="230" cy="78" r="48" fill="#dcfce7" stroke="#16a34a" strokeWidth="2" opacity="0.5" />
-      <circle cx="200" cy="125" r="48" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2" opacity="0.5" />
-      <text x="130" y="58" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">データ</text>
-      <text x="130" y="72" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">サイエンス力</text>
-      <text x="270" y="58" textAnchor="middle" fontSize="10" fontWeight="700" fill="#16a34a">データエンジ</text>
-      <text x="270" y="72" textAnchor="middle" fontSize="10" fontWeight="700" fill="#16a34a">ニアリング力</text>
-      <text x="200" y="155" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">ビジネス力</text>
-      <text x="200" y="97" textAnchor="middle" fontSize="9" fontWeight="700" fill="#334155">DS</text>
-      <text x="200" y="107" textAnchor="middle" fontSize="9" fontWeight="700" fill="#334155">人材</text>
+      <circle cx="165" cy="80" r="48" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" opacity="0.5" />
+      <circle cx="235" cy="80" r="48" fill="#dcfce7" stroke="#16a34a" strokeWidth="2" opacity="0.5" />
+      <circle cx="200" cy="130" r="48" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2" opacity="0.5" />
+      <text x="120" y="60" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">データ</text>
+      <text x="120" y="74" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">サイエンス力</text>
+      <text x="280" y="60" textAnchor="middle" fontSize="10" fontWeight="700" fill="#16a34a">データエンジ</text>
+      <text x="280" y="74" textAnchor="middle" fontSize="10" fontWeight="700" fill="#16a34a">ニアリング力</text>
+      <text x="200" y="168" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">ビジネス力</text>
+      <text x="200" y="98" textAnchor="middle" fontSize="9" fontWeight="700" fill="#334155">DS</text>
+      <text x="200" y="108" textAnchor="middle" fontSize="9" fontWeight="700" fill="#334155">人材</text>
     </svg>
   );
 }
@@ -249,10 +249,11 @@ function AnalyticsFourStages() {
     <svg viewBox="0 0 400 170" className="topic-diagram">
       <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">分析の4段階</text>
       {stages.map((s, i) => {
-        const x = 20 + i * 80;
-        const y = 130 - i * 28;
+        const x = 15 + i * 82;
         const w = 75;
-        const h = 130 - y + 10;
+        const bottom = 140;
+        const h = 40 + i * 24;
+        const y = bottom - h;
         return (
           <g key={i}>
             <rect x={x} y={y} width={w} height={h} fill={s.bg} stroke={s.color} strokeWidth="1.5" rx="4" />
@@ -262,9 +263,9 @@ function AnalyticsFourStages() {
         );
       })}
       {/* Right-side arrow indicating value / difficulty */}
-      <line x1="365" y1="135" x2="365" y2="35" stroke="#334155" strokeWidth="1.5" markerEnd="url(#arrowStagesBiz)" />
-      <text x="380" y="88" textAnchor="middle" fontSize="8" fontWeight="600" fill="#334155" transform="rotate(-90,380,88)">価値/難易度</text>
-      <text x="200" y="160" textAnchor="middle" fontSize="9" fill="#64748b">段階が上がるほど価値が高く、実現の難易度も上がる</text>
+      <line x1="360" y1="138" x2="360" y2="30" stroke="#334155" strokeWidth="1.5" markerEnd="url(#arrowStagesBiz)" />
+      <text x="375" y="88" textAnchor="middle" fontSize="8" fontWeight="600" fill="#334155" transform="rotate(-90,375,88)">価値/難易度</text>
+      <text x="190" y="160" textAnchor="middle" fontSize="9" fill="#64748b">段階が上がるほど価値が高く、実現の難易度も上がる</text>
       <defs>
         <marker id="arrowStagesBiz" markerWidth="8" markerHeight="6" refX="4" refY="3" orient="auto">
           <path d="M0,6 L4,0 L8,6" fill="#334155" />
@@ -347,7 +348,7 @@ function AbTestDiagram() {
   const barA = (valA / maxVal) * barMaxW;
   const barB = (valB / maxVal) * barMaxW;
   return (
-    <svg viewBox="0 0 400 200" className="topic-diagram">
+    <svg viewBox="0 0 400 210" className="topic-diagram">
       <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">A/Bテストの流れ</text>
       {/* User pool */}
       <rect x="140" y="26" width="120" height="28" fill="#f1f5f9" stroke="#64748b" strokeWidth="1.5" rx="6" />
@@ -374,9 +375,9 @@ function AbTestDiagram() {
       <text x="55" y="170" textAnchor="end" fontSize="9" fontWeight="600" fill="#16a34a">B</text>
       <rect x="60" y="160" width={barB} height="16" fill="#86efac" stroke="#16a34a" strokeWidth="1" rx="3" />
       <text x={64 + barB} y="172" fontSize="9" fontWeight="600" fill="#16a34a">{valB}%</text>
-      {/* Statistical significance label */}
-      <text x="320" y="160" textAnchor="middle" fontSize="10" fontWeight="700" fill="#dc2626">差は統計的に有意か？</text>
-      <text x="200" y="195" textAnchor="middle" fontSize="9" fill="#64748b">帰無仮説: A=B ｜ p値 &lt; 0.05 で有意差あり → 新案採用</text>
+      {/* Statistical significance label – positioned below bars */}
+      <text x="200" y="188" textAnchor="middle" fontSize="10" fontWeight="700" fill="#dc2626">差は統計的に有意か？</text>
+      <text x="200" y="200" textAnchor="middle" fontSize="9" fill="#64748b">帰無仮説: A=B ｜ p値 &lt; 0.05 で有意差あり → 新案採用</text>
       <defs>
         <marker id="arrowABBiz" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
           <path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8" />
@@ -565,8 +566,8 @@ function DxStagesDiagram() {
       {/* Ascending steps */}
       {stages.map((s, i) => {
         const x = 20 + i * 135;
-        const y = 110 - i * 30;
-        const h = 60 + i * 30;
+        const y = 104 - i * 28;
+        const h = 68 + i * 28;
         return (
           <g key={i}>
             <rect x={x} y={y} width="120" height={h} fill={s.bg} rx="8" stroke={s.color} strokeWidth="2" />

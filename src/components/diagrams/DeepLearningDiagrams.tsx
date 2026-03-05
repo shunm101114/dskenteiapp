@@ -90,7 +90,7 @@ function CnnFlow() {
       <text x="125" y="42" textAnchor="middle" fontSize="9" fontWeight="600" fill="#b45309">畳み込み</text>
       <text x="125" y="55" textAnchor="middle" fontSize="8" fill="#64748b">特徴抽出</text>
       <rect x="100" y="60" width="15" height="15" fill="#fcd34d" stroke="#f59e0b" strokeWidth="1" rx="2" />
-      <text x="125" y="72" fontSize="7" fill="#b45309">フィルタ</text>
+      <text x="118" y="82" fontSize="7" fill="#b45309">フィルタ</text>
       <text x="125" y="95" textAnchor="middle" fontSize="8" fill="#f59e0b">Conv層</text>
       <text x="170" y="55" fontSize="12" fill="#64748b">{"\u2192"}</text>
       <rect x="185" y="25" width="65" height="55" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="6" />
@@ -205,10 +205,10 @@ function TransferLearningDiagram() {
       <text x={rightX + layerW / 2} y={startY + 5 * (layerH + gap) + 10} textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">新タスクモデル</text>
 
       {/* Legend */}
-      <rect x="280" y="155" width="12" height="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="1" rx="2" />
-      <text x="296" y="165" fontSize="8" fill="#64748b">凍結（再利用）</text>
-      <rect x="350" y="155" width="12" height="12" fill="#dcfce7" stroke="#16a34a" strokeWidth="1" rx="2" />
-      <text x="366" y="165" fontSize="8" fill="#64748b">再学習</text>
+      <rect x="260" y="155" width="12" height="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="1" rx="2" />
+      <text x="276" y="165" fontSize="8" fill="#64748b">凍結（再利用）</text>
+      <rect x="360" y="155" width="12" height="12" fill="#dcfce7" stroke="#16a34a" strokeWidth="1" rx="2" />
+      <text x="376" y="165" fontSize="8" fill="#64748b">再学習</text>
     </svg>
   );
 }
@@ -881,11 +881,11 @@ function RagPipelineDiagram() {
       <text x="345" y="78" textAnchor="middle" fontSize="7.5" fill="#9333ea">文書+質問で生成</text>
 
       {/* Arrow LLM -> answer */}
-      <line x1="380" y1="65" x2="393" y2="65" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
+      <line x1="380" y1="65" x2="388" y2="65" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
 
       {/* Answer */}
-      <rect x="395" y="50" width="20" height="30" fill="#fecaca" stroke="#dc2626" strokeWidth="1.5" rx="4" />
-      <text x="405" y="69" textAnchor="middle" fontSize="8" fontWeight="700" fill="#dc2626" transform="rotate(-90, 405, 69)">回答</text>
+      <rect x="390" y="50" width="28" height="30" fill="#fecaca" stroke="#dc2626" strokeWidth="1.5" rx="4" />
+      <text x="404" y="69" textAnchor="middle" fontSize="9" fontWeight="700" fill="#dc2626">回答</text>
 
       {/* Bottom label */}
       <rect x="110" y="163" width="200" height="18" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1" rx="4" />
@@ -920,7 +920,7 @@ function NlpBasicsDiagram() {
       {/* Panel 2: NER */}
       <rect x={startX + panelW + gap} y={startY} width={panelW} height={panelH} fill="#f8fafc" stroke="#f59e0b" strokeWidth="1.5" rx="6" />
       <text x={startX + panelW + gap + panelW / 2} y={startY + 16} textAnchor="middle" fontSize="9" fontWeight="700" fill="#b45309">固有表現認識</text>
-      <rect x={startX + panelW + gap + 5} y={startY + 24} width={panelW - 10} height="36" fill="#fefce8" rx="3" />
+      <rect x={startX + panelW + gap + 5} y={startY + 24} width={panelW - 10} height="40" fill="#fefce8" rx="3" />
       {/* Colored entities in text */}
       <text x={startX + panelW + gap + 10} y={startY + 38} fontSize="8" fill="#334155">
         <tspan fill="#2563eb" fontWeight="600">[東京]</tspan>
@@ -928,16 +928,16 @@ function NlpBasicsDiagram() {
         <tspan fill="#dc2626" fontWeight="600">[田中]</tspan>
         <tspan>が</tspan>
       </text>
-      <text x={startX + panelW + gap + 10} y={startY + 51} fontSize="8" fill="#334155">
+      <text x={startX + panelW + gap + 10} y={startY + 55} fontSize="8" fill="#334155">
         <tspan fill="#16a34a" fontWeight="600">[3月]</tspan>
         <tspan>に発表した</tspan>
       </text>
-      <rect x={startX + panelW + gap + 8} y={startY + 62} width="32" height="12" fill="#dbeafe" rx="2" />
-      <text x={startX + panelW + gap + 24} y={startY + 71} textAnchor="middle" fontSize="6.5" fill="#2563eb">地名</text>
-      <rect x={startX + panelW + gap + 44} y={startY + 62} width="32" height="12" fill="#fecaca" rx="2" />
-      <text x={startX + panelW + gap + 60} y={startY + 71} textAnchor="middle" fontSize="6.5" fill="#dc2626">人名</text>
-      <rect x={startX + panelW + gap + 80} y={startY + 62} width="32" height="12" fill="#dcfce7" rx="2" />
-      <text x={startX + panelW + gap + 96} y={startY + 71} textAnchor="middle" fontSize="6.5" fill="#16a34a">日時</text>
+      <rect x={startX + panelW + gap + 8} y={startY + 66} width="32" height="12" fill="#dbeafe" rx="2" />
+      <text x={startX + panelW + gap + 24} y={startY + 75} textAnchor="middle" fontSize="6.5" fill="#2563eb">地名</text>
+      <rect x={startX + panelW + gap + 44} y={startY + 66} width="32" height="12" fill="#fecaca" rx="2" />
+      <text x={startX + panelW + gap + 60} y={startY + 75} textAnchor="middle" fontSize="6.5" fill="#dc2626">人名</text>
+      <rect x={startX + panelW + gap + 80} y={startY + 66} width="32" height="12" fill="#dcfce7" rx="2" />
+      <text x={startX + panelW + gap + 96} y={startY + 75} textAnchor="middle" fontSize="6.5" fill="#16a34a">日時</text>
       <text x={startX + panelW + gap + panelW / 2} y={startY + 88} textAnchor="middle" fontSize="7" fill="#64748b">テキスト→エンティティ抽出</text>
 
       {/* Panel 3: Machine Translation */}
@@ -1004,19 +1004,19 @@ function ImageRecognitionDiagram() {
       <text x="300" y="62" fontSize="8" fontWeight="600" fill="#334155">猫</text>
       <rect x="318" y="54" width="85" height="10" fill="#e2e8f0" rx="2" />
       <rect x="318" y="54" width={85 * 0.95} height="10" fill="#2563eb" rx="2" />
-      <text x="398" y="63" fontSize="7" fill="#2563eb">95%</text>
+      <text x="398" y="62" fontSize="7" fill="#2563eb">95%</text>
 
       {/* Dog bar - 3% */}
       <text x="300" y="78" fontSize="8" fontWeight="600" fill="#334155">犬</text>
       <rect x="318" y="70" width="85" height="10" fill="#e2e8f0" rx="2" />
       <rect x="318" y="70" width={85 * 0.03} height="10" fill="#f59e0b" rx="2" />
-      <text x="326" y="79" fontSize="7" fill="#f59e0b">3%</text>
+      <text x="326" y="78" fontSize="7" fill="#f59e0b">3%</text>
 
       {/* Bird bar - 2% */}
       <text x="300" y="94" fontSize="8" fontWeight="600" fill="#334155">鳥</text>
       <rect x="318" y="86" width="85" height="10" fill="#e2e8f0" rx="2" />
       <rect x="318" y="86" width={85 * 0.02} height="10" fill="#16a34a" rx="2" />
-      <text x="324" y="95" fontSize="7" fill="#16a34a">2%</text>
+      <text x="324" y="94" fontSize="7" fill="#16a34a">2%</text>
 
       <text x="351" y="118" textAnchor="middle" fontSize="8" fill="#64748b">信頼度スコア</text>
 
@@ -1071,20 +1071,20 @@ function LlmArchitectureDiagram() {
       <text x="210" y="94" textAnchor="middle" fontSize="8" fontWeight="600" fill="#dc2626">数十億〜数兆パラメータ</text>
 
       {/* Example */}
-      <rect x="40" y="115" width="340" height="40" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.2" rx="6" />
+      <rect x="40" y="115" width="340" height="46" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.2" rx="6" />
       <text x="210" y="130" textAnchor="middle" fontSize="9" fontWeight="700" fill="#334155">例: 次の単語予測</text>
 
-      <text x="70" y="147" fontSize="9" fill="#2563eb" fontWeight="600">"今日の天気は"</text>
-      <text x="175" y="147" fontSize="14" fill="#64748b">→</text>
-      <rect x="195" y="137" width="55" height="16" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.2" rx="3" />
-      <text x="222" y="149" textAnchor="middle" fontSize="9" fontWeight="700" fill="#16a34a">"晴れ"</text>
-      <text x="265" y="149" fontSize="8" fill="#64748b">(確率: 0.42)</text>
+      <text x="70" y="151" fontSize="9" fill="#2563eb" fontWeight="600">"今日の天気は"</text>
+      <text x="175" y="151" fontSize="14" fill="#64748b">→</text>
+      <rect x="195" y="141" width="55" height="16" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.2" rx="3" />
+      <text x="222" y="153" textAnchor="middle" fontSize="9" fontWeight="700" fill="#16a34a">"晴れ"</text>
+      <text x="265" y="153" fontSize="8" fill="#64748b">(確率: 0.42)</text>
 
       {/* Key concepts */}
-      <text x="50" y="172" fontSize="8" fill="#64748b">自己回帰: 1トークンずつ順に生成</text>
-      <text x="230" y="172" fontSize="8" fill="#64748b">スケール則: パラメータ数↑ → 性能↑</text>
+      <text x="50" y="176" fontSize="8" fill="#64748b">自己回帰: 1トークンずつ順に生成</text>
+      <text x="230" y="176" fontSize="8" fill="#64748b">スケール則: パラメータ数↑ → 性能↑</text>
 
-      <text x="210" y="186" textAnchor="middle" fontSize="8" fill="#64748b">GPT系 / LLaMA / Gemini など主要モデルはTransformerベース</text>
+      <text x="210" y="188" textAnchor="middle" fontSize="8" fill="#64748b">GPT系 / LLaMA / Gemini など主要モデルはTransformerベース</text>
     </svg>
   );
 }

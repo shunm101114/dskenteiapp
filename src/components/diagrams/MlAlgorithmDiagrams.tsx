@@ -128,7 +128,7 @@ function ConfusionMatrix() {
 function BiasVariance() {
   const n = 50;
   return (
-    <svg viewBox="0 0 400 190" className="topic-diagram">
+    <svg viewBox="0 0 400 210" className="topic-diagram">
       <text x="200" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">バイアス-バリアンス トレードオフ</text>
       <line x1="60" y1="140" x2="370" y2="140" stroke="#64748b" strokeWidth="1" />
       <line x1="60" y1="140" x2="60" y2="38" stroke="#64748b" strokeWidth="1" />
@@ -153,12 +153,12 @@ function BiasVariance() {
       }).join(" ")} fill="none" stroke="#16a34a" strokeWidth="2" strokeDasharray="6,3" />
       <line x1="180" y1="38" x2="180" y2="140" stroke="#f59e0b" strokeWidth="1" strokeDasharray="3,3" />
       <text x="180" y="34" textAnchor="middle" fontSize="9" fontWeight="600" fill="#f59e0b">最適点</text>
-      <line x1="80" y1="178" x2="100" y2="178" stroke="#2563eb" strokeWidth="2.5" />
-      <text x="104" y="182" fontSize="9" fill="#2563eb">バイアス²</text>
-      <line x1="165" y1="178" x2="185" y2="178" stroke="#dc2626" strokeWidth="2.5" />
-      <text x="189" y="182" fontSize="9" fill="#dc2626">バリアンス</text>
-      <line x1="255" y1="178" x2="275" y2="178" stroke="#16a34a" strokeWidth="2" strokeDasharray="6,3" />
-      <text x="279" y="182" fontSize="9" fill="#16a34a">総合誤差</text>
+      <line x1="80" y1="198" x2="100" y2="198" stroke="#2563eb" strokeWidth="2.5" />
+      <text x="104" y="202" fontSize="9" fill="#2563eb">バイアス²</text>
+      <line x1="165" y1="198" x2="185" y2="198" stroke="#dc2626" strokeWidth="2.5" />
+      <text x="189" y="202" fontSize="9" fill="#dc2626">バリアンス</text>
+      <line x1="255" y1="198" x2="275" y2="198" stroke="#16a34a" strokeWidth="2" strokeDasharray="6,3" />
+      <text x="279" y="202" fontSize="9" fill="#16a34a">総合誤差</text>
     </svg>
   );
 }
@@ -303,8 +303,9 @@ function SvmDiagram() {
         {/* Margin lines */}
         <line x1="95" y1="5" x2="165" y2="135" stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="5,3" />
         <line x1="135" y1="5" x2="205" y2="135" stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="5,3" />
-        {/* Margin label */}
-        <text x="150" y="80" textAnchor="middle" fontSize="8" fill="#64748b" transform="rotate(62,150,80)">マージン</text>
+        {/* Margin label – horizontally centered between the two dashed margin lines with background */}
+        <rect x="133" y="62" width="36" height="13" fill="white" opacity="0.9" rx="2" />
+        <text x="151" y="72" textAnchor="middle" fontSize="8" fontWeight="600" fill="#64748b">マージン</text>
         {/* Support vectors highlighted */}
         {supportA.map(([x, y], i) => (
           <circle key={`sa${i}`} cx={x} cy={y} r="9" fill="none" stroke="#f59e0b" strokeWidth="2" />

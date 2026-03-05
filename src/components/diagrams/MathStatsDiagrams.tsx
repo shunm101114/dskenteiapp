@@ -10,13 +10,13 @@ function NormalDistribution() {
     const y = Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
     points.push([x, y]);
   }
-  const cx = 200, cy = 130, sx = 50, sy = -280;
+  const cx = 200, cy = 140, sx = 50, sy = -240;
   const path = points.map(([x, y], i) =>
     `${i === 0 ? "M" : "L"}${cx + x * sx},${cy + y * sy}`
   ).join(" ");
 
   return (
-    <svg viewBox="0 0 400 180" className="topic-diagram">
+    <svg viewBox="0 0 400 190" className="topic-diagram">
       <path d={`${path} L${cx + 3.5 * sx},${cy} L${cx - 3.5 * sx},${cy} Z`} fill="#dbeafe" opacity="0.5" />
       <path d={`M${cx - sx},${cy} ${points.filter(([x]) => x >= -1 && x <= 1).map(([x, y]) => `L${cx + x * sx},${cy + y * sy}`).join(" ")} L${cx + sx},${cy} Z`} fill="#93c5fd" opacity="0.6" />
       <path d={path} fill="none" stroke="#2563eb" strokeWidth="2.5" />
@@ -29,10 +29,10 @@ function NormalDistribution() {
           </text>
         </g>
       ))}
-      <text x={cx} y={cy - 105} textAnchor="middle" fontSize="12" fontWeight="600" fill="#2563eb">68.3%</text>
-      <line x1={cx - sx} y1={cy - 95} x2={cx + sx} y2={cy - 95} stroke="#2563eb" strokeWidth="1.5" />
-      <line x1={cx - sx} y1={cy - 100} x2={cx - sx} y2={cy - 90} stroke="#2563eb" strokeWidth="1.5" />
-      <line x1={cx + sx} y1={cy - 100} x2={cx + sx} y2={cy - 90} stroke="#2563eb" strokeWidth="1.5" />
+      <text x={cx} y="18" textAnchor="middle" fontSize="12" fontWeight="600" fill="#2563eb">68.3%</text>
+      <line x1={cx - sx} y1="24" x2={cx + sx} y2="24" stroke="#2563eb" strokeWidth="1.5" />
+      <line x1={cx - sx} y1="20" x2={cx - sx} y2="28" stroke="#2563eb" strokeWidth="1.5" />
+      <line x1={cx + sx} y1="20" x2={cx + sx} y2="28" stroke="#2563eb" strokeWidth="1.5" />
       <text x={cx} y={cy + 35} textAnchor="middle" fontSize="10" fill="#64748b">±2σ: 95.4% ／ ±3σ: 99.7%</text>
     </svg>
   );
@@ -87,7 +87,7 @@ function HypothesisTesting() {
       <text x={cx - 1.96 * sx} y={cy + 18} textAnchor="middle" fontSize="10" fill="#dc2626">-1.96</text>
       <text x={cx + 2.8 * sx} y="52" textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">棄却域</text>
       <text x={cx - 2.8 * sx} y="52" textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">棄却域</text>
-      <text x={cx} y="52" textAnchor="middle" fontSize="10" fill="#64748b">採択域 (α=0.05)</text>
+      <text x={cx} y="26" textAnchor="middle" fontSize="10" fill="#64748b">採択域 (α=0.05)</text>
       <text x="50" y={cy + 40} fontSize="10" fill="#dc2626">第1種の過誤(α): 真なのに棄却</text>
       <text x="50" y={cy + 58} fontSize="10" fill="#f59e0b">第2種の過誤(β): 偽なのに棄却しない</text>
     </svg>
@@ -167,7 +167,7 @@ function ProbDistributions() {
         ))}
       </g>
       <g transform="translate(200,25)">
-        <text x="90" y="10" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">正規分布</text>
+        <text x="90" y="0" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">正規分布</text>
         <path d={
           Array.from({length: 60}, (_, i) => {
             const x = (i - 30) / 8;
@@ -238,8 +238,8 @@ function TTestDiagram() {
       <text x={cx2} y={cy + 18} textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">x̄₂</text>
       <line x1={cx1} y1={cy + 28} x2={cx2} y2={cy + 28} stroke="#334155" strokeWidth="1.5" markerEnd="url(#arrowTT)" markerStart="url(#arrowTTr)" />
       <text x="200" y={cy + 42} textAnchor="middle" fontSize="9" fill="#334155">差が有意か？→ p値で判定</text>
-      <text x={cx1} y="28" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">群A</text>
-      <text x={cx2} y="28" textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">群B</text>
+      <text x={cx1} y="22" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">群A</text>
+      <text x={cx2} y="22" textAnchor="middle" fontSize="10" fontWeight="600" fill="#dc2626">群B</text>
       <defs>
         <marker id="arrowTT" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
           <path d="M0,0 L6,2.5 L0,5" fill="#334155" />
@@ -390,8 +390,8 @@ function GradientDescentDiagram() {
       <circle cx="270" cy="105" r="3.5" fill="#dc2626" opacity="0.7" />
       <line x1="270" y1="105" x2="130" y2="64" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="4,3" />
       <circle cx="130" cy="64" r="3" fill="#dc2626" opacity="0.5" />
-      <text x="108" y="45" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">学習率大</text>
-      <text x="108" y="67" textAnchor="start" fontSize="8" fill="#dc2626">発散リスク</text>
+      <text x="95" y="42" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">学習率大</text>
+      <text x="155" y="128" textAnchor="middle" fontSize="8" fill="#dc2626">発散リスク</text>
 
       {/* 適切 (converging nicely) - right-center */}
       <circle cx="260" cy="100" r="4" fill="#16a34a" />
@@ -481,20 +481,20 @@ function SetTheoryDiagram() {
   };
 
   return (
-    <svg viewBox="0 0 400 175" className="topic-diagram">
+    <svg viewBox="0 0 400 192" className="topic-diagram">
       <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">集合演算</text>
 
       {/* Union A∪B */}
-      <VennPair cx={100} cy={65} label="A∪B（和集合）" fillA="#dbeafe" fillB="#fef3c7" fillIntersect="#bbf7d0" />
+      <VennPair cx={100} cy={62} label="A∪B（和集合）" fillA="#dbeafe" fillB="#fef3c7" fillIntersect="#bbf7d0" />
 
       {/* Intersection A∩B */}
-      <VennPair cx={300} cy={65} label="A∩B（積集合）" fillIntersect="#bbf7d0" />
+      <VennPair cx={300} cy={62} label="A∩B（積集合）" fillIntersect="#bbf7d0" />
 
       {/* Difference A−B */}
-      <VennPair cx={100} cy={140} label="A−B（差集合）" fillA="#dbeafe" />
+      <VennPair cx={100} cy={138} label="A−B（差集合）" fillA="#dbeafe" />
 
       {/* Complement Aᶜ */}
-      <VennPair cx={300} cy={140} label="Aᶜ（補集合）" fillOuter="#e2e8f0" />
+      <VennPair cx={300} cy={138} label="Aᶜ（補集合）" fillOuter="#e2e8f0" />
     </svg>
   );
 }
@@ -572,7 +572,7 @@ function LogisticRegressionDiagram() {
       <line x1="70" y1="140" x2="340" y2="140" stroke="#64748b" strokeWidth="1" />
       <line x1="70" y1="28" x2="70" y2="140" stroke="#64748b" strokeWidth="1" />
       <text x="350" y="143" fontSize="9" fill="#64748b">x</text>
-      <text x="56" y="35" textAnchor="middle" fontSize="9" fill="#334155">P(Y=1)</text>
+      <text x="44" y="24" textAnchor="middle" fontSize="9" fill="#334155">P(Y=1)</text>
 
       {/* Y-axis labels */}
       <text x="64" y="34" textAnchor="end" fontSize="8" fill="#64748b">1.0</text>
@@ -586,7 +586,7 @@ function LogisticRegressionDiagram() {
 
       {/* Threshold line at 0.5 */}
       <line x1="70" y1="85" x2="340" y2="85" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="5,3" />
-      <text x="345" y="88" fontSize="8" fontWeight="600" fill="#f59e0b">閾値=0.5</text>
+      <text x="345" y="75" fontSize="8" fontWeight="600" fill="#f59e0b">閾値=0.5</text>
 
       {/* Class 0 scatter (y=0) */}
       {class0.map((x, i) => (
@@ -625,7 +625,7 @@ function TimeSeriesDecomposition() {
   };
 
   return (
-    <svg viewBox="0 0 400 185" className="topic-diagram">
+    <svg viewBox="0 0 400 200" className="topic-diagram">
       <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">時系列分解</text>
 
       {/* Trend */}
@@ -717,19 +717,19 @@ function DescriptiveStatsDiagram() {
       <line x1="40" y1="70" x2="360" y2="70" stroke="#64748b" strokeWidth="1.5" />
 
       {/* Mode marker */}
-      <line x1="170" y1="62" x2="170" y2="78" stroke="#f59e0b" strokeWidth="2.5" />
-      <text x="170" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#f59e0b">最頻値</text>
-      <text x="170" y="100" textAnchor="middle" fontSize="8" fill="#f59e0b">Mo</text>
+      <line x1="155" y1="62" x2="155" y2="78" stroke="#f59e0b" strokeWidth="2.5" />
+      <text x="155" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#f59e0b">最頻値</text>
+      <text x="155" y="100" textAnchor="middle" fontSize="8" fill="#f59e0b">Mo</text>
 
       {/* Median marker */}
-      <line x1="195" y1="62" x2="195" y2="78" stroke="#16a34a" strokeWidth="2.5" />
-      <text x="195" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">中央値</text>
-      <text x="195" y="100" textAnchor="middle" fontSize="8" fill="#16a34a">Me</text>
+      <line x1="200" y1="62" x2="200" y2="78" stroke="#16a34a" strokeWidth="2.5" />
+      <text x="200" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">中央値</text>
+      <text x="200" y="100" textAnchor="middle" fontSize="8" fill="#16a34a">Me</text>
 
       {/* Mean marker */}
-      <line x1="210" y1="62" x2="210" y2="78" stroke="#2563eb" strokeWidth="2.5" />
-      <text x="210" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">平均値</text>
-      <text x="210" y="100" textAnchor="middle" fontSize="8" fill="#2563eb">μ</text>
+      <line x1="245" y1="62" x2="245" y2="78" stroke="#2563eb" strokeWidth="2.5" />
+      <text x="245" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">平均値</text>
+      <text x="245" y="100" textAnchor="middle" fontSize="8" fill="#2563eb">μ</text>
 
       {/* Range bracket */}
       <line x1="60" y1="115" x2="340" y2="115" stroke="#dc2626" strokeWidth="1.5" />
@@ -795,26 +795,26 @@ function ChiSquareDiagram() {
       <text x={60 + rejIdx * 4.5 + 30} y="82" textAnchor="start" fontSize="8" fill="#dc2626">α=0.05</text>
 
       {/* 2x2 contingency table */}
-      <g transform="translate(20,128)">
-        <rect x="0" y="0" width="175" height="48" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1" rx="3" />
-        <line x1="55" y1="0" x2="55" y2="48" stroke="#94a3b8" strokeWidth="0.8" />
-        <line x1="115" y1="0" x2="115" y2="48" stroke="#94a3b8" strokeWidth="0.8" />
-        <line x1="0" y1="16" x2="175" y2="16" stroke="#94a3b8" strokeWidth="0.8" />
-        <line x1="0" y1="32" x2="175" y2="32" stroke="#94a3b8" strokeWidth="0.8" />
-        <text x="27" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">観測度数</text>
-        <text x="85" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">B=Yes</text>
-        <text x="145" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">B=No</text>
-        <text x="27" y="27" textAnchor="middle" fontSize="7" fill="#334155">A=Yes</text>
-        <text x="85" y="27" textAnchor="middle" fontSize="8" fill="#2563eb">O₁₁</text>
-        <text x="145" y="27" textAnchor="middle" fontSize="8" fill="#2563eb">O₁₂</text>
-        <text x="27" y="44" textAnchor="middle" fontSize="7" fill="#334155">A=No</text>
-        <text x="85" y="44" textAnchor="middle" fontSize="8" fill="#2563eb">O₂₁</text>
-        <text x="145" y="44" textAnchor="middle" fontSize="8" fill="#2563eb">O₂₂</text>
+      <g transform="translate(10,128)">
+        <rect x="0" y="0" width="200" height="48" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1" rx="3" />
+        <line x1="65" y1="0" x2="65" y2="48" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="132" y1="0" x2="132" y2="48" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="0" y1="16" x2="200" y2="16" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="0" y1="32" x2="200" y2="32" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="32" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">観測度数</text>
+        <text x="98" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">B=Yes</text>
+        <text x="166" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">B=No</text>
+        <text x="32" y="27" textAnchor="middle" fontSize="7" fill="#334155">A=Yes</text>
+        <text x="98" y="27" textAnchor="middle" fontSize="8" fill="#2563eb">O₁₁</text>
+        <text x="166" y="27" textAnchor="middle" fontSize="8" fill="#2563eb">O₁₂</text>
+        <text x="32" y="44" textAnchor="middle" fontSize="7" fill="#334155">A=No</text>
+        <text x="98" y="44" textAnchor="middle" fontSize="8" fill="#2563eb">O₂₁</text>
+        <text x="166" y="44" textAnchor="middle" fontSize="8" fill="#2563eb">O₂₂</text>
       </g>
 
       {/* Formula */}
-      <text x="310" y="155" textAnchor="middle" fontSize="9" fill="#334155">χ² = Σ (O - E)² / E</text>
-      <text x="310" y="170" textAnchor="middle" fontSize="8" fill="#64748b">O:観測度数  E:期待度数</text>
+      <text x="320" y="150" textAnchor="middle" fontSize="9" fill="#334155">χ² = Σ (O - E)² / E</text>
+      <text x="320" y="165" textAnchor="middle" fontSize="8" fill="#64748b">O:観測度数  E:期待度数</text>
     </svg>
   );
 }
@@ -851,7 +851,7 @@ function CentralLimitTheoremDiagram() {
   ).join(" ");
 
   return (
-    <svg viewBox="0 0 400 185" className="topic-diagram">
+    <svg viewBox="0 0 440 185" className="topic-diagram">
       <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">大数の法則と中心極限定理</text>
 
       {/* Row 1: Original skewed distribution */}
@@ -881,8 +881,8 @@ function CentralLimitTheoremDiagram() {
       <text x="375" y="115" fontSize="7" fontWeight="600" fill="#7c3aed" textAnchor="start">に近づく</text>
 
       {/* Bottom formula */}
-      <text x="200" y="165" textAnchor="middle" fontSize="9" fill="#334155">X̄ ~ N(μ, σ²/n)　(n → ∞)</text>
-      <text x="200" y="178" textAnchor="middle" fontSize="8" fill="#64748b">標本平均の分布は母集団の形に関わらず正規分布に収束</text>
+      <text x="210" y="165" textAnchor="middle" fontSize="9" fill="#334155">X̄ ~ N(μ, σ²/n)　(n → ∞)</text>
+      <text x="210" y="178" textAnchor="middle" fontSize="8" fill="#64748b">標本平均の分布は母集団の形に関わらず正規分布に収束</text>
 
       <defs>
         <marker id="cltArrow" markerWidth="7" markerHeight="6" refX="3.5" refY="6" orient="auto">
