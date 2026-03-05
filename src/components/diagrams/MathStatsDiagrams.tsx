@@ -657,6 +657,527 @@ function TimeSeriesDecomposition() {
   );
 }
 
+function DataVisualization() {
+  const histBars = [15, 30, 50, 70, 55, 35, 20];
+  const scatter = [[10,60],[18,50],[25,42],[32,35],[40,25],[48,20],[55,12]];
+  return (
+    <svg viewBox="0 0 480 145" className="topic-diagram">
+      <g transform="translate(0,0)">
+        <text x="75" y="14" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">ヒストグラム</text>
+        <rect x="10" y="20" width="130" height="115" fill="#f8fafc" rx="4" />
+        {histBars.map((h, i) => (
+          <rect key={i} x={18 + i * 17} y={120 - h} width="14" height={h} fill="#93c5fd" stroke="#2563eb" strokeWidth="0.5" rx="1" />
+        ))}
+        <line x1="15" y1="120" x2="140" y2="120" stroke="#64748b" strokeWidth="1" />
+      </g>
+      <g transform="translate(165,0)">
+        <text x="75" y="14" textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">散布図</text>
+        <rect x="10" y="20" width="130" height="115" fill="#f0fdf4" rx="4" />
+        {scatter.map(([x, y], i) => <circle key={i} cx={x + 15} cy={y + 30} r="4" fill="#16a34a" opacity="0.8" />)}
+        <line x1="20" y1="100" x2="120" y2="30" stroke="#16a34a" strokeWidth="1" strokeDasharray="4,3" />
+      </g>
+      <g transform="translate(330,0)">
+        <text x="75" y="14" textAnchor="middle" fontSize="10" fontWeight="600" fill="#9333ea">箱ひげ図</text>
+        <rect x="10" y="20" width="130" height="115" fill="#faf5ff" rx="4" />
+        <line x1="75" y1="35" x2="75" y2="55" stroke="#9333ea" strokeWidth="1.5" />
+        <line x1="60" y1="35" x2="90" y2="35" stroke="#9333ea" strokeWidth="1.5" />
+        <rect x="50" y="55" width="50" height="40" fill="#e9d5ff" stroke="#9333ea" strokeWidth="1.5" rx="2" />
+        <line x1="50" y1="72" x2="100" y2="72" stroke="#9333ea" strokeWidth="2.5" />
+        <line x1="75" y1="95" x2="75" y2="115" stroke="#9333ea" strokeWidth="1.5" />
+        <line x1="60" y1="115" x2="90" y2="115" stroke="#9333ea" strokeWidth="1.5" />
+        <text x="108" y="40" fontSize="8" fill="#9333ea">max</text>
+        <text x="108" y="60" fontSize="8" fill="#9333ea">Q3</text>
+        <text x="108" y="76" fontSize="8" fill="#9333ea">中央値</text>
+        <text x="108" y="98" fontSize="8" fill="#9333ea">Q1</text>
+        <text x="108" y="118" fontSize="8" fill="#9333ea">min</text>
+      </g>
+    </svg>
+  );
+}
+
+function DescriptiveStatsDiagram() {
+  /* Small bell curve points */
+  const bellPts = Array.from({ length: 61 }, (_, i) => {
+    const x = (i - 30) / 8;
+    const y = Math.exp(-0.5 * x * x) * 50;
+    return [60 + i * 4.5, 52 - y] as [number, number];
+  });
+  const bellPath = bellPts.map(([x, y], i) =>
+    `${i === 0 ? "M" : "L"}${x},${y}`
+  ).join(" ");
+
+  return (
+    <svg viewBox="0 0 400 170" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">代表値と散布度</text>
+
+      {/* Bell curve */}
+      <path d={bellPath} fill="#dbeafe" opacity="0.4" stroke="#2563eb" strokeWidth="1.5" />
+
+      {/* Number line */}
+      <line x1="40" y1="70" x2="360" y2="70" stroke="#64748b" strokeWidth="1.5" />
+
+      {/* Mode marker */}
+      <line x1="170" y1="62" x2="170" y2="78" stroke="#f59e0b" strokeWidth="2.5" />
+      <text x="170" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#f59e0b">最頻値</text>
+      <text x="170" y="100" textAnchor="middle" fontSize="8" fill="#f59e0b">Mo</text>
+
+      {/* Median marker */}
+      <line x1="195" y1="62" x2="195" y2="78" stroke="#16a34a" strokeWidth="2.5" />
+      <text x="195" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">中央値</text>
+      <text x="195" y="100" textAnchor="middle" fontSize="8" fill="#16a34a">Me</text>
+
+      {/* Mean marker */}
+      <line x1="210" y1="62" x2="210" y2="78" stroke="#2563eb" strokeWidth="2.5" />
+      <text x="210" y="90" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">平均値</text>
+      <text x="210" y="100" textAnchor="middle" fontSize="8" fill="#2563eb">μ</text>
+
+      {/* Range bracket */}
+      <line x1="60" y1="115" x2="340" y2="115" stroke="#dc2626" strokeWidth="1.5" />
+      <line x1="60" y1="110" x2="60" y2="120" stroke="#dc2626" strokeWidth="1.5" />
+      <line x1="340" y1="110" x2="340" y2="120" stroke="#dc2626" strokeWidth="1.5" />
+      <text x="200" y="128" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">範囲 (Range)</text>
+
+      {/* IQR bracket */}
+      <line x1="140" y1="138" x2="260" y2="138" stroke="#7c3aed" strokeWidth="1.5" />
+      <line x1="140" y1="133" x2="140" y2="143" stroke="#7c3aed" strokeWidth="1.5" />
+      <line x1="260" y1="133" x2="260" y2="143" stroke="#7c3aed" strokeWidth="1.5" />
+      <text x="200" y="155" textAnchor="middle" fontSize="9" fontWeight="600" fill="#7c3aed">四分位範囲 (IQR = Q3 - Q1)</text>
+
+      {/* Q1 and Q3 labels */}
+      <text x="140" y="108" textAnchor="middle" fontSize="8" fill="#7c3aed">Q1</text>
+      <text x="260" y="108" textAnchor="middle" fontSize="8" fill="#7c3aed">Q3</text>
+
+      {/* Variance note */}
+      <text x="200" y="167" textAnchor="middle" fontSize="9" fill="#64748b">分散 σ² = Σ(xᵢ - μ)² / n　標準偏差 σ = √σ²</text>
+    </svg>
+  );
+}
+
+function ChiSquareDiagram() {
+  /* Chi-square distribution curve (df=4, right-skewed) */
+  const chiPts = Array.from({ length: 61 }, (_, i) => {
+    const x = i * 0.25; // 0 to 15
+    const df = 4;
+    const y = x > 0 ? Math.pow(x, df / 2 - 1) * Math.exp(-x / 2) * 1.8 : 0;
+    return [60 + i * 4.5, 110 - y * 12] as [number, number];
+  });
+  const chiPath = chiPts.map(([x, y], i) =>
+    `${i === 0 ? "M" : "L"}${x},${y}`
+  ).join(" ");
+  /* Rejection region (right tail, x >= 9.49 for df=4, alpha=0.05) */
+  const rejIdx = Math.floor(9.49 / 0.25);
+  const rejPts = chiPts.filter((_, i) => i >= rejIdx);
+  const rejPath = rejPts.map(([x, y], i) =>
+    `${i === 0 ? "M" : "L"}${x},${y}`
+  ).join(" ");
+
+  return (
+    <svg viewBox="0 0 400 180" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">カイ二乗検定 (χ²検定)</text>
+
+      {/* Distribution curve */}
+      <path d={`${chiPath} L${60 + 60 * 4.5},110 L60,110 Z`} fill="#dbeafe" opacity="0.3" />
+      <path d={chiPath} fill="none" stroke="#2563eb" strokeWidth="2" />
+
+      {/* Rejection region shaded */}
+      {rejPts.length > 0 && (
+        <path d={`${rejPath} L${rejPts[rejPts.length - 1][0]},110 L${rejPts[0][0]},110 Z`} fill="#fee2e2" opacity="0.7" />
+      )}
+
+      {/* Axis */}
+      <line x1="55" y1="110" x2="340" y2="110" stroke="#64748b" strokeWidth="1" />
+      <text x="340" y="123" fontSize="9" fill="#64748b">χ²</text>
+
+      {/* Critical value line */}
+      <line x1={60 + rejIdx * 4.5} y1="28" x2={60 + rejIdx * 4.5} y2="110" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="4,3" />
+      <text x={60 + rejIdx * 4.5} y="123" textAnchor="middle" fontSize="8" fill="#dc2626">χ²α</text>
+      <text x={60 + rejIdx * 4.5 + 30} y="70" textAnchor="start" fontSize="9" fontWeight="600" fill="#dc2626">棄却域</text>
+      <text x={60 + rejIdx * 4.5 + 30} y="82" textAnchor="start" fontSize="8" fill="#dc2626">α=0.05</text>
+
+      {/* 2x2 contingency table */}
+      <g transform="translate(20,128)">
+        <rect x="0" y="0" width="175" height="48" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1" rx="3" />
+        <line x1="55" y1="0" x2="55" y2="48" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="115" y1="0" x2="115" y2="48" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="0" y1="16" x2="175" y2="16" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="0" y1="32" x2="175" y2="32" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="27" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">観測度数</text>
+        <text x="85" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">B=Yes</text>
+        <text x="145" y="12" textAnchor="middle" fontSize="7" fontWeight="600" fill="#334155">B=No</text>
+        <text x="27" y="27" textAnchor="middle" fontSize="7" fill="#334155">A=Yes</text>
+        <text x="85" y="27" textAnchor="middle" fontSize="8" fill="#2563eb">O₁₁</text>
+        <text x="145" y="27" textAnchor="middle" fontSize="8" fill="#2563eb">O₁₂</text>
+        <text x="27" y="44" textAnchor="middle" fontSize="7" fill="#334155">A=No</text>
+        <text x="85" y="44" textAnchor="middle" fontSize="8" fill="#2563eb">O₂₁</text>
+        <text x="145" y="44" textAnchor="middle" fontSize="8" fill="#2563eb">O₂₂</text>
+      </g>
+
+      {/* Formula */}
+      <text x="310" y="155" textAnchor="middle" fontSize="9" fill="#334155">χ² = Σ (O - E)² / E</text>
+      <text x="310" y="170" textAnchor="middle" fontSize="8" fill="#64748b">O:観測度数  E:期待度数</text>
+    </svg>
+  );
+}
+
+function CentralLimitTheoremDiagram() {
+  /* Skewed distribution (original) */
+  const skewedPts = Array.from({ length: 41 }, (_, i) => {
+    const x = i / 40;
+    const y = x < 0.15 ? x * 6 : Math.exp(-3.5 * (x - 0.15)) * 0.9;
+    return [50 + i * 7, 38 - y * 28] as [number, number];
+  });
+  const skewedPath = skewedPts.map(([x, y], i) =>
+    `${i === 0 ? "M" : "L"}${x},${y}`
+  ).join(" ");
+
+  /* n=5 means distribution (less skewed) */
+  const n5Pts = Array.from({ length: 41 }, (_, i) => {
+    const x = (i - 18) / 8;
+    const y = Math.exp(-0.5 * x * x) * 0.7 + (x < 0 ? 0 : Math.exp(-2 * x) * 0.3);
+    return [50 + i * 7, 90 - y * 30] as [number, number];
+  });
+  const n5Path = n5Pts.map(([x, y], i) =>
+    `${i === 0 ? "M" : "L"}${x},${y}`
+  ).join(" ");
+
+  /* n=30 means distribution (approximately normal) */
+  const n30Pts = Array.from({ length: 41 }, (_, i) => {
+    const x = (i - 20) / 7;
+    const y = Math.exp(-0.5 * x * x);
+    return [50 + i * 7, 142 - y * 30] as [number, number];
+  });
+  const n30Path = n30Pts.map(([x, y], i) =>
+    `${i === 0 ? "M" : "L"}${x},${y}`
+  ).join(" ");
+
+  return (
+    <svg viewBox="0 0 400 185" className="topic-diagram">
+      <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">大数の法則と中心極限定理</text>
+
+      {/* Row 1: Original skewed distribution */}
+      <text x="15" y="32" fontSize="8" fontWeight="600" fill="#dc2626">母集団</text>
+      <text x="15" y="42" fontSize="7" fill="#dc2626">(歪んだ分布)</text>
+      <path d={`${skewedPath} L${50 + 40 * 7},38 L50,38 Z`} fill="#fee2e2" opacity="0.5" />
+      <path d={skewedPath} fill="none" stroke="#dc2626" strokeWidth="2" />
+
+      {/* Row 2: n=5 means */}
+      <text x="15" y="80" fontSize="8" fontWeight="600" fill="#f59e0b">n=5の</text>
+      <text x="15" y="90" fontSize="7" fill="#f59e0b">標本平均</text>
+      <path d={`${n5Path} L${50 + 40 * 7},90 L50,90 Z`} fill="#fef3c7" opacity="0.5" />
+      <path d={n5Path} fill="none" stroke="#f59e0b" strokeWidth="2" />
+
+      {/* Row 3: n=30 means (normal) */}
+      <text x="15" y="132" fontSize="8" fontWeight="600" fill="#2563eb">n=30の</text>
+      <text x="15" y="142" fontSize="7" fill="#2563eb">標本平均</text>
+      <path d={`${n30Path} L${50 + 40 * 7},142 L50,142 Z`} fill="#dbeafe" opacity="0.5" />
+      <path d={n30Path} fill="none" stroke="#2563eb" strokeWidth="2" />
+
+      {/* Arrow on the right showing convergence */}
+      <line x1="360" y1="35" x2="360" y2="140" stroke="#7c3aed" strokeWidth="2" markerEnd="url(#cltArrow)" />
+      <text x="375" y="75" fontSize="7" fontWeight="600" fill="#7c3aed" textAnchor="start">n が</text>
+      <text x="375" y="85" fontSize="7" fontWeight="600" fill="#7c3aed" textAnchor="start">大きく</text>
+      <text x="375" y="95" fontSize="7" fontWeight="600" fill="#7c3aed" textAnchor="start">なると</text>
+      <text x="375" y="105" fontSize="7" fontWeight="600" fill="#7c3aed" textAnchor="start">正規分布</text>
+      <text x="375" y="115" fontSize="7" fontWeight="600" fill="#7c3aed" textAnchor="start">に近づく</text>
+
+      {/* Bottom formula */}
+      <text x="200" y="165" textAnchor="middle" fontSize="9" fill="#334155">X̄ ~ N(μ, σ²/n)　(n → ∞)</text>
+      <text x="200" y="178" textAnchor="middle" fontSize="8" fill="#64748b">標本平均の分布は母集団の形に関わらず正規分布に収束</text>
+
+      <defs>
+        <marker id="cltArrow" markerWidth="7" markerHeight="6" refX="3.5" refY="6" orient="auto">
+          <path d="M0,0 L3.5,6 L7,0" fill="#7c3aed" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function MultipleRegressionDiagram() {
+  return (
+    <svg viewBox="0 0 400 175" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">重回帰分析</text>
+
+      {/* Formula */}
+      <rect x="60" y="24" width="280" height="28" fill="#f8fafc" rx="6" stroke="#94a3b8" strokeWidth="1" />
+      <text x="200" y="43" textAnchor="middle" fontSize="12" fontWeight="600" fill="#334155">y = β₀ + β₁x₁ + β₂x₂ + ε</text>
+
+      {/* Variable table */}
+      <g transform="translate(30,62)">
+        <rect x="0" y="0" width="340" height="42" fill="#dbeafe" rx="4" stroke="#2563eb" strokeWidth="1" />
+        <text x="57" y="15" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">説明変数</text>
+        <text x="57" y="28" textAnchor="middle" fontSize="10" fill="#334155">x₁: 広さ (m²)</text>
+        <text x="170" y="15" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">説明変数</text>
+        <text x="170" y="28" textAnchor="middle" fontSize="10" fill="#334155">x₂: 駅距離 (分)</text>
+        <line x1="113" y1="2" x2="113" y2="40" stroke="#2563eb" strokeWidth="0.5" strokeDasharray="3,2" />
+        <line x1="227" y1="0" x2="227" y2="42" stroke="#2563eb" strokeWidth="1" />
+        <rect x="227" y="0" width="113" height="42" fill="#dcfce7" rx="0 4 4 0" stroke="#16a34a" strokeWidth="1" />
+        <text x="283" y="15" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">目的変数</text>
+        <text x="283" y="28" textAnchor="middle" fontSize="10" fill="#334155">y: 家賃 (万円)</text>
+      </g>
+
+      {/* Arrow diagram: multiple x → y */}
+      <g transform="translate(0,112)">
+        {/* x1 box */}
+        <rect x="40" y="0" width="70" height="24" fill="#dbeafe" rx="4" stroke="#2563eb" strokeWidth="1.5" />
+        <text x="75" y="16" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">x₁</text>
+
+        {/* x2 box */}
+        <rect x="40" y="32" width="70" height="24" fill="#dbeafe" rx="4" stroke="#2563eb" strokeWidth="1.5" />
+        <text x="75" y="48" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">x₂</text>
+
+        {/* y box */}
+        <rect x="250" y="12" width="80" height="28" fill="#dcfce7" rx="4" stroke="#16a34a" strokeWidth="1.5" />
+        <text x="290" y="31" textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">y</text>
+
+        {/* Arrows */}
+        <line x1="110" y1="12" x2="248" y2="24" stroke="#334155" strokeWidth="1.5" markerEnd="url(#mrArrow)" />
+        <line x1="110" y1="44" x2="248" y2="30" stroke="#334155" strokeWidth="1.5" markerEnd="url(#mrArrow)" />
+
+        {/* Coefficients on arrows */}
+        <text x="175" y="10" textAnchor="middle" fontSize="9" fill="#dc2626">β₁</text>
+        <text x="175" y="48" textAnchor="middle" fontSize="9" fill="#dc2626">β₂</text>
+
+        {/* Label */}
+        <text x="200" y="60" textAnchor="middle" fontSize="9" fill="#64748b">多数の説明変数 → 目的変数</text>
+      </g>
+
+      <defs>
+        <marker id="mrArrow" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+          <path d="M0,0 L7,2.5 L0,5" fill="#334155" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function FactorAnalysisDiagram() {
+  return (
+    <svg viewBox="0 0 400 180" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">因子分析</text>
+
+      {/* Latent factors (circles) */}
+      <circle cx="100" cy="90" r="30" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" />
+      <text x="100" y="87" textAnchor="middle" fontSize="13" fontWeight="700" fill="#2563eb">F₁</text>
+      <text x="100" y="100" textAnchor="middle" fontSize="8" fill="#2563eb">因子1</text>
+
+      <circle cx="100" cy="160" r="0" /> {/* spacer */}
+
+      <circle cx="200" cy="90" r="30" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2" />
+      <text x="200" y="87" textAnchor="middle" fontSize="13" fontWeight="700" fill="#b45309">F₂</text>
+      <text x="200" y="100" textAnchor="middle" fontSize="8" fill="#b45309">因子2</text>
+
+      {/* Label for latent factors */}
+      <text x="150" y="42" textAnchor="middle" fontSize="9" fontWeight="600" fill="#7c3aed">潜在因子</text>
+      <rect x="80" y="44" width="140" height="1" fill="#7c3aed" opacity="0.3" />
+
+      {/* Observed variables (rectangles) */}
+      {[
+        { label: "x₁", x: 280, y: 28 },
+        { label: "x₂", x: 280, y: 58 },
+        { label: "x₃", x: 280, y: 88 },
+        { label: "x₄", x: 280, y: 118 },
+        { label: "x₅", x: 280, y: 148 },
+      ].map((v, i) => (
+        <g key={i}>
+          <rect x={v.x} y={v.y} width="50" height="22" fill="#f0fdf4" rx="3" stroke="#16a34a" strokeWidth="1.5" />
+          <text x={v.x + 25} y={v.y + 15} textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">{v.label}</text>
+        </g>
+      ))}
+
+      {/* Label for observed variables */}
+      <text x="305" y="22" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">観測変数</text>
+
+      {/* Arrows from F1 to x1, x2, x3 */}
+      <line x1="130" y1="80" x2="278" y2="39" stroke="#2563eb" strokeWidth="1.5" markerEnd="url(#faArrowB)" />
+      <line x1="130" y1="86" x2="278" y2="69" stroke="#2563eb" strokeWidth="1.5" markerEnd="url(#faArrowB)" />
+      <line x1="130" y1="92" x2="278" y2="99" stroke="#2563eb" strokeWidth="1.5" markerEnd="url(#faArrowB)" />
+
+      {/* Factor loading labels for F1 */}
+      <text x="200" y="52" textAnchor="middle" fontSize="7" fill="#2563eb">λ₁₁</text>
+      <text x="210" y="72" textAnchor="middle" fontSize="7" fill="#2563eb">λ₁₂</text>
+      <text x="210" y="100" textAnchor="middle" fontSize="7" fill="#2563eb">λ₁₃</text>
+
+      {/* Arrows from F2 to x3, x4, x5 */}
+      <line x1="228" y1="84" x2="278" y2="99" stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#faArrowY)" />
+      <line x1="228" y1="96" x2="278" y2="129" stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#faArrowY)" />
+      <line x1="228" y1="105" x2="278" y2="159" stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#faArrowY)" />
+
+      {/* Factor loading labels for F2 */}
+      <text x="258" y="88" textAnchor="middle" fontSize="7" fill="#b45309">λ₂₃</text>
+      <text x="260" y="118" textAnchor="middle" fontSize="7" fill="#b45309">λ₂₄</text>
+      <text x="260" y="142" textAnchor="middle" fontSize="7" fill="#b45309">λ₂₅</text>
+
+      {/* Bottom note */}
+      <text x="200" y="178" textAnchor="middle" fontSize="9" fill="#64748b">少数の潜在因子で多数の観測変数の相関構造を説明</text>
+
+      <defs>
+        <marker id="faArrowB" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <path d="M0,0 L6,2.5 L0,5" fill="#2563eb" />
+        </marker>
+        <marker id="faArrowY" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <path d="M0,0 L6,2.5 L0,5" fill="#f59e0b" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function MissingDataDiagram() {
+  const Cell = ({ x, y, w, h, missing }: { x: number; y: number; w: number; h: number; missing?: boolean; color: string }) => (
+    <rect x={x} y={y} width={w} height={h} fill={missing ? "#fee2e2" : "#f8fafc"} stroke={missing ? "#dc2626" : "#94a3b8"} strokeWidth={missing ? "1.5" : "0.8"} rx="1" />
+  );
+
+  /* Each mini table: 3 cols x 4 rows */
+  const tw = 105; // table width
+  const cw = 35; // cell width
+  const rh = 11; // row height
+
+  return (
+    <svg viewBox="0 0 400 180" className="topic-diagram">
+      <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">欠損値の処理</text>
+
+      {/* MCAR table */}
+      <g transform="translate(15,22)">
+        <text x={tw / 2} y="10" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">MCAR</text>
+        <text x={tw / 2} y="20" textAnchor="middle" fontSize="7" fill="#64748b">完全にランダム</text>
+        {/* Header */}
+        {[0,1,2].map(c => <Cell key={c} x={c * cw} y={24} w={cw} h={rh} color="#94a3b8" />)}
+        {/* Data rows with random missing */}
+        {[[false,false,false],[true,false,false],[false,false,true],[false,true,false]].map((row, r) =>
+          row.map((m, c) => <Cell key={`${r}-${c}`} x={c * cw} y={35 + r * rh} w={cw} h={rh} missing={m} color="#94a3b8" />)
+        )}
+        {/* Missing indicators */}
+        <text x={0 * cw + cw / 2} y={35 + 1 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+        <text x={2 * cw + cw / 2} y={35 + 2 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+        <text x={1 * cw + cw / 2} y={35 + 3 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+      </g>
+
+      {/* MAR table */}
+      <g transform="translate(145,22)">
+        <text x={tw / 2} y="10" textAnchor="middle" fontSize="9" fontWeight="600" fill="#f59e0b">MAR</text>
+        <text x={tw / 2} y="20" textAnchor="middle" fontSize="7" fill="#64748b">他の変数に依存</text>
+        {[0,1,2].map(c => <Cell key={c} x={c * cw} y={24} w={cw} h={rh} color="#94a3b8" />)}
+        {/* Missing pattern depends on column 0 */}
+        {[[false,false,false],[false,true,false],[false,false,false],[false,true,false]].map((row, r) =>
+          row.map((m, c) => <Cell key={`${r}-${c}`} x={c * cw} y={35 + r * rh} w={cw} h={rh} missing={m} color="#94a3b8" />)
+        )}
+        <text x={1 * cw + cw / 2} y={35 + 1 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+        <text x={1 * cw + cw / 2} y={35 + 3 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+        {/* Arrow showing dependency */}
+        <line x1={0 * cw + cw / 2} y1={35 + 4 * rh + 4} x2={1 * cw + cw / 2} y2={35 + 4 * rh + 4} stroke="#f59e0b" strokeWidth="1" markerEnd="url(#mdArrow)" />
+        <text x={tw / 2} y={35 + 4 * rh + 14} textAnchor="middle" fontSize="6" fill="#f59e0b">パターンあり</text>
+      </g>
+
+      {/* MNAR table */}
+      <g transform="translate(275,22)">
+        <text x={tw / 2} y="10" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">MNAR</text>
+        <text x={tw / 2} y="20" textAnchor="middle" fontSize="7" fill="#64748b">欠損値自体に依存</text>
+        {[0,1,2].map(c => <Cell key={c} x={c * cw} y={24} w={cw} h={rh} color="#94a3b8" />)}
+        {/* Systematic missing in column 2 */}
+        {[[false,false,true],[false,false,true],[false,false,true],[false,false,false]].map((row, r) =>
+          row.map((m, c) => <Cell key={`${r}-${c}`} x={c * cw} y={35 + r * rh} w={cw} h={rh} missing={m} color="#94a3b8" />)
+        )}
+        <text x={2 * cw + cw / 2} y={35 + 0 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+        <text x={2 * cw + cw / 2} y={35 + 1 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+        <text x={2 * cw + cw / 2} y={35 + 2 * rh + 8} textAnchor="middle" fontSize="6" fill="#dc2626">NA</text>
+      </g>
+
+      {/* Strategy boxes */}
+      <g transform="translate(0,120)">
+        <text x="200" y="8" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">対処法</text>
+
+        <rect x="20" y="14" width="105" height="35" fill="#f0fdf4" rx="5" stroke="#16a34a" strokeWidth="1.5" />
+        <text x="72" y="29" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">リストワイズ削除</text>
+        <text x="72" y="41" textAnchor="middle" fontSize="7" fill="#64748b">欠損行を除外</text>
+
+        <rect x="145" y="14" width="105" height="35" fill="#dbeafe" rx="5" stroke="#2563eb" strokeWidth="1.5" />
+        <text x="197" y="29" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">平均値代入</text>
+        <text x="197" y="41" textAnchor="middle" fontSize="7" fill="#64748b">x̄ で補完</text>
+
+        <rect x="270" y="14" width="112" height="35" fill="#faf5ff" rx="5" stroke="#7c3aed" strokeWidth="1.5" />
+        <text x="326" y="29" textAnchor="middle" fontSize="9" fontWeight="600" fill="#7c3aed">多重代入法</text>
+        <text x="326" y="41" textAnchor="middle" fontSize="7" fill="#64748b">複数回の補完で推定</text>
+      </g>
+
+      <text x="200" y="176" textAnchor="middle" fontSize="8" fill="#64748b">MCAR: Missing Completely At Random / MAR: Missing At Random / MNAR: Missing Not At Random</text>
+
+      <defs>
+        <marker id="mdArrow" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <path d="M0,0 L6,2.5 L0,5" fill="#f59e0b" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function RegularizationDiagram() {
+  /* Contour ellipses (simplified as ellipses) */
+  const contourRx = [25, 40, 55];
+  const contourRy = [15, 24, 33];
+
+  return (
+    <svg viewBox="0 0 400 180" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">正則化: L1 (Lasso) vs L2 (Ridge)</text>
+
+      {/* L1 Lasso - Left */}
+      <g transform="translate(10,24)">
+        <text x="90" y="12" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">L1 正則化 (Lasso)</text>
+        <rect x="5" y="18" width="170" height="110" fill="#f8fafc" rx="4" />
+
+        {/* Axes */}
+        <line x1="90" y1="28" x2="90" y2="120" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="15" y1="73" x2="165" y2="73" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="168" y="70" fontSize="7" fill="#64748b">β₁</text>
+        <text x="93" y="27" fontSize="7" fill="#64748b">β₂</text>
+
+        {/* Diamond constraint (L1 ball) */}
+        <polygon points="90,43 120,73 90,103 60,73" fill="#dbeafe" opacity="0.5" stroke="#2563eb" strokeWidth="2" />
+
+        {/* Contour ellipses (centered off-axis) */}
+        {contourRx.map((rx, i) => (
+          <ellipse key={i} cx="130" cy="50" rx={rx} ry={contourRy[i]} fill="none" stroke="#dc2626" strokeWidth="1" opacity={0.4 + i * 0.2} transform="rotate(30, 130, 50)" />
+        ))}
+
+        {/* Intersection point at axis (sparse solution) */}
+        <circle cx="90" cy="53" r="4" fill="#dc2626" stroke="#dc2626" strokeWidth="1.5" />
+        <text x="78" y="47" textAnchor="end" fontSize="7" fontWeight="600" fill="#dc2626">β₁=0</text>
+        <text x="90" y="135" textAnchor="middle" fontSize="8" fontWeight="600" fill="#2563eb">特徴選択（スパース）</text>
+        <text x="90" y="145" textAnchor="middle" fontSize="7" fill="#64748b">不要な係数 → 0 に</text>
+      </g>
+
+      {/* L2 Ridge - Right */}
+      <g transform="translate(200,24)">
+        <text x="95" y="12" textAnchor="middle" fontSize="10" fontWeight="600" fill="#16a34a">L2 正則化 (Ridge)</text>
+        <rect x="5" y="18" width="170" height="110" fill="#f8fafc" rx="4" />
+
+        {/* Axes */}
+        <line x1="90" y1="28" x2="90" y2="120" stroke="#94a3b8" strokeWidth="0.8" />
+        <line x1="15" y1="73" x2="165" y2="73" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="168" y="70" fontSize="7" fill="#64748b">β₁</text>
+        <text x="93" y="27" fontSize="7" fill="#64748b">β₂</text>
+
+        {/* Circle constraint (L2 ball) */}
+        <circle cx="90" cy="73" r="30" fill="#dcfce7" opacity="0.5" stroke="#16a34a" strokeWidth="2" />
+
+        {/* Contour ellipses */}
+        {contourRx.map((rx, i) => (
+          <ellipse key={i} cx="130" cy="50" rx={rx} ry={contourRy[i]} fill="none" stroke="#dc2626" strokeWidth="1" opacity={0.4 + i * 0.2} transform="rotate(30, 130, 50)" />
+        ))}
+
+        {/* Intersection point off-axis */}
+        <circle cx="108" cy="48" r="4" fill="#dc2626" stroke="#dc2626" strokeWidth="1.5" />
+        <text x="108" y="42" textAnchor="middle" fontSize="7" fontWeight="600" fill="#dc2626">β₁≠0, β₂≠0</text>
+        <text x="95" y="135" textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">係数の縮小</text>
+        <text x="95" y="145" textAnchor="middle" fontSize="7" fill="#64748b">全係数を小さく抑える</text>
+      </g>
+
+      {/* Bottom comparison */}
+      <text x="200" y="178" textAnchor="middle" fontSize="9" fill="#64748b">損失関数 + λ|β| (L1) or λβ² (L2)　λ: 正則化パラメータ</text>
+    </svg>
+  );
+}
+
 /* ================================================================
    Export map
    ================================================================ */
@@ -668,13 +1189,21 @@ export const mathStatsDiagrams: Record<string, () => ReactNode> = {
   "math-topic-04": CorrelationScatter,
   "math-topic-05": MatrixBasics,
   "math-topic-06": ProbDistributions,
+  "math-topic-07": DataVisualization,
   "math-topic-10": DataScales,
+  "ds-topic-01": DescriptiveStatsDiagram,
+  "ds-topic-03": ConfidenceIntervalDiagram,
+  "ds-topic-04": ChiSquareDiagram,
   "ds-topic-05": TTestDiagram,
+  "ds-topic-07": CentralLimitTheoremDiagram,
+  "ds-topic-14": MultipleRegressionDiagram,
+  "ds-topic-15": LogisticRegressionDiagram,
+  "ds-topic-16": FactorAnalysisDiagram,
+  "ds-topic-18": TimeSeriesDecomposition,
+  "ds-topic-27": MissingDataDiagram,
+  "ds-topic-36": RegularizationDiagram,
   "math-topic-12": AnovaDiagram,
   "math-topic-13": PcaMathDiagram,
   "math-topic-14": GradientDescentDiagram,
   "math-topic-16": SetTheoryDiagram,
-  "ds-topic-03": ConfidenceIntervalDiagram,
-  "ds-topic-15": LogisticRegressionDiagram,
-  "ds-topic-18": TimeSeriesDecomposition,
 };

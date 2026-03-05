@@ -647,6 +647,327 @@ function RegressionVsClassification() {
   );
 }
 
+function XaiDiagram() {
+  const features: { name: string; value: number; color: string }[] = [
+    { name: "年収", value: 0.85, color: "#2563eb" },
+    { name: "年齢", value: 0.52, color: "#2563eb" },
+    { name: "勤続年数", value: 0.38, color: "#16a34a" },
+    { name: "借入額", value: -0.30, color: "#dc2626" },
+    { name: "居住年数", value: 0.22, color: "#16a34a" },
+  ];
+  const maxAbs = 0.85;
+  const barAreaW = 220;
+  const barH = 18;
+  const gap = 6;
+  const originX = 200;
+  return (
+    <svg viewBox="0 0 420 175" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">特徴量の重要度（SHAP値）</text>
+      {/* Axis line at origin */}
+      <line x1={originX} y1="28" x2={originX} y2={28 + features.length * (barH + gap)} stroke="#94a3b8" strokeWidth="1" strokeDasharray="3,2" />
+      {features.map((f, i) => {
+        const barW = Math.abs(f.value) / maxAbs * (barAreaW / 2);
+        const bx = f.value >= 0 ? originX : originX - barW;
+        const ty = 40 + i * (barH + gap);
+        return (
+          <g key={i}>
+            <text x={85} y={ty + barH / 2 + 1} textAnchor="end" fontSize="10" fontWeight="600" fill="#334155">{f.name}</text>
+            <rect x={bx} y={ty} width={barW} height={barH} fill={f.color} opacity="0.75" rx="3" />
+            <text
+              x={f.value >= 0 ? bx + barW + 5 : bx - 5}
+              y={ty + barH / 2 + 4}
+              textAnchor={f.value >= 0 ? "start" : "end"}
+              fontSize="9"
+              fill={f.color}
+              fontWeight="600"
+            >
+              {f.value > 0 ? "+" : ""}{f.value.toFixed(2)}
+            </text>
+          </g>
+        );
+      })}
+      {/* Axis labels */}
+      <text x={originX - barAreaW / 4} y={28 + features.length * (barH + gap) + 16} textAnchor="middle" fontSize="8" fill="#dc2626">← 負の寄与</text>
+      <text x={originX + barAreaW / 4} y={28 + features.length * (barH + gap) + 16} textAnchor="middle" fontSize="8" fill="#2563eb">正の寄与 →</text>
+      <text x="210" y="170" textAnchor="middle" fontSize="9" fill="#64748b">モデルの予測根拠を可視化</text>
+    </svg>
+  );
+}
+
+function AnomalyDetectionDiagram() {
+  const normals: [number, number][] = [
+    [120,70],[135,65],[125,80],[140,75],[130,60],[115,75],[145,70],[128,85],
+    [138,58],[122,68],[132,78],[118,62],[142,82],[126,72],[136,66],[130,74],
+  ];
+  const outliers: [number, number][] = [
+    [40, 30], [250, 120], [220, 25], [60, 130],
+  ];
+  return (
+    <svg viewBox="0 0 400 185" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">異常検知（Anomaly Detection）</text>
+      <g transform="translate(55,22)">
+        <rect x="0" y="0" width="290" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" strokeWidth="1" />
+        {/* Decision boundary */}
+        <ellipse cx="130" cy="72" rx="50" ry="35" fill="none" stroke="#2563eb" strokeWidth="1.5" strokeDasharray="6,3" />
+        {/* Normal points */}
+        {normals.map(([x, y], i) => (
+          <circle key={`n${i}`} cx={x} cy={y} r="4" fill="#2563eb" opacity="0.7" />
+        ))}
+        {/* Outlier points */}
+        {outliers.map(([x, y], i) => (
+          <circle key={`o${i}`} cx={x} cy={y} r="5" fill="#dc2626" opacity="0.9" />
+        ))}
+      </g>
+      {/* Legend */}
+      <circle cx="80" cy="178" r="5" fill="#2563eb" />
+      <text x="90" y="182" fontSize="9" fill="#2563eb">正常</text>
+      <circle cx="145" cy="178" r="5" fill="#dc2626" />
+      <text x="155" y="182" fontSize="9" fill="#dc2626">異常（外れ値）</text>
+      <text x="310" y="182" textAnchor="middle" fontSize="9" fill="#64748b">決定境界で識別</text>
+    </svg>
+  );
+}
+
+function TimeSeriesForecastDiagram() {
+  const history: [number, number][] = [
+    [30,85],[55,70],[80,78],[105,55],[130,62],[155,48],[180,52],[205,40],
+  ];
+  const forecast: [number, number][] = [
+    [205,40],[230,35],[255,30],[280,28],[305,25],
+  ];
+  const upper: [number, number][] = [
+    [205,40],[230,28],[255,18],[280,12],[305,8],
+  ];
+  const lower: [number, number][] = [
+    [205,40],[230,42],[255,42],[280,44],[305,42],
+  ];
+  const toPath = (pts: [number, number][], cmd = "M") =>
+    pts.map(([x, y], i) => `${i === 0 ? cmd : "L"}${x},${y}`).join(" ");
+  return (
+    <svg viewBox="0 0 400 175" className="topic-diagram">
+      <text x="200" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">時系列予測（Time Series Forecast）</text>
+      <g transform="translate(30,25)">
+        {/* Axes */}
+        <line x1="15" y1="110" x2="330" y2="110" stroke="#64748b" strokeWidth="0.8" />
+        <line x1="15" y1="110" x2="15" y2="0" stroke="#64748b" strokeWidth="0.8" />
+        {/* Confidence band */}
+        <path
+          d={`${toPath(upper)} ${toPath([...lower].reverse(), "L")} Z`}
+          fill="#2563eb" opacity="0.1"
+        />
+        {/* Historical line (solid) */}
+        <path d={toPath(history)} fill="none" stroke="#2563eb" strokeWidth="2.5" />
+        {/* Forecast line (dashed) */}
+        <path d={toPath(forecast)} fill="none" stroke="#2563eb" strokeWidth="2" strokeDasharray="6,3" />
+        {/* "Now" vertical line */}
+        <line x1="205" y1="0" x2="205" y2="110" stroke="#64748b" strokeWidth="1" strokeDasharray="4,3" />
+        <text x="205" y="122" textAnchor="middle" fontSize="9" fontWeight="600" fill="#64748b">現在</text>
+      </g>
+      {/* Legend */}
+      <line x1="60" y1="165" x2="90" y2="165" stroke="#2563eb" strokeWidth="2.5" />
+      <text x="95" y="169" fontSize="9" fill="#2563eb">実績データ</text>
+      <line x1="175" y1="165" x2="205" y2="165" stroke="#2563eb" strokeWidth="2" strokeDasharray="6,3" />
+      <text x="210" y="169" fontSize="9" fill="#2563eb">予測</text>
+      <rect x="270" y="159" width="20" height="12" fill="#2563eb" opacity="0.1" stroke="#2563eb" strokeWidth="0.5" rx="2" />
+      <text x="295" y="169" fontSize="9" fill="#64748b">信頼区間</text>
+    </svg>
+  );
+}
+
+function ImbalancedDataDiagram() {
+  const leftBarMax = 120;
+  const scale = (v: number) => (v / 950) * leftBarMax;
+  return (
+    <svg viewBox="0 0 440 175" className="topic-diagram">
+      <text x="220" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">不均衡データの対処</text>
+      {/* Left: Before */}
+      <g transform="translate(30,30)">
+        <text x="55" y="12" textAnchor="middle" fontSize="10" fontWeight="600" fill="#64748b">元データ</text>
+        {/* Normal bar */}
+        <rect x="15" y={22 + leftBarMax - scale(950)} width="35" height={scale(950)} fill="#2563eb" opacity="0.8" rx="3" />
+        <text x="32" y={18 + leftBarMax - scale(950)} textAnchor="middle" fontSize="8" fontWeight="600" fill="#2563eb">950件</text>
+        <text x="32" y={leftBarMax + 38} textAnchor="middle" fontSize="9" fill="#334155">正常</text>
+        {/* Anomaly bar */}
+        <rect x="60" y={22 + leftBarMax - scale(50)} width="35" height={scale(50)} fill="#dc2626" opacity="0.8" rx="3" />
+        <text x="77" y={18 + leftBarMax - scale(50)} textAnchor="middle" fontSize="8" fontWeight="600" fill="#dc2626">50件</text>
+        <text x="77" y={leftBarMax + 38} textAnchor="middle" fontSize="9" fill="#334155">異常</text>
+      </g>
+      {/* Arrow */}
+      <g transform="translate(160,80)">
+        <line x1="0" y1="0" x2="60" y2="0" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrowImb)" />
+        <text x="30" y="-8" textAnchor="middle" fontSize="8" fontWeight="600" fill="#f59e0b">オーバーサンプリング</text>
+        <text x="30" y="14" textAnchor="middle" fontSize="8" fill="#64748b">(SMOTE)</text>
+      </g>
+      {/* Right: After */}
+      <g transform="translate(250,30)">
+        <text x="70" y="12" textAnchor="middle" fontSize="10" fontWeight="600" fill="#64748b">リサンプリング後</text>
+        {/* Normal bar (reduced or same) */}
+        <rect x="25" y={22 + leftBarMax - scale(600)} width="35" height={scale(600)} fill="#2563eb" opacity="0.8" rx="3" />
+        <text x="42" y={18 + leftBarMax - scale(600)} textAnchor="middle" fontSize="8" fontWeight="600" fill="#2563eb">600件</text>
+        <text x="42" y={leftBarMax + 38} textAnchor="middle" fontSize="9" fill="#334155">正常</text>
+        {/* Anomaly bar (increased) */}
+        <rect x="75" y={22 + leftBarMax - scale(500)} width="35" height={scale(500)} fill="#dc2626" opacity="0.8" rx="3" />
+        <text x="92" y={18 + leftBarMax - scale(500)} textAnchor="middle" fontSize="8" fontWeight="600" fill="#dc2626">500件</text>
+        <text x="92" y={leftBarMax + 38} textAnchor="middle" fontSize="9" fill="#334155">異常</text>
+      </g>
+      <defs>
+        <marker id="arrowImb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#f59e0b" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function MlWorkflowDiagram() {
+  const steps = [
+    { label: "課題定義", color: "#7c3aed", bg: "#f3e8ff" },
+    { label: "データ収集", color: "#2563eb", bg: "#dbeafe" },
+    { label: "前処理", color: "#16a34a", bg: "#dcfce7" },
+    { label: "モデル構築", color: "#f59e0b", bg: "#fef3c7" },
+    { label: "評価", color: "#dc2626", bg: "#fee2e2" },
+    { label: "運用", color: "#64748b", bg: "#f1f5f9" },
+  ];
+  const boxW = 58, boxH = 32, gap = 8;
+  const totalW = steps.length * boxW + (steps.length - 1) * gap;
+  const offsetX = (440 - totalW) / 2;
+  return (
+    <svg viewBox="0 0 440 130" className="topic-diagram">
+      <text x="220" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">MLプロジェクトワークフロー</text>
+      {steps.map((s, i) => {
+        const x = offsetX + i * (boxW + gap);
+        const y = 35;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width={boxW} height={boxH} fill={s.bg} rx="6" stroke={s.color} strokeWidth="2" />
+            <text x={x + boxW / 2} y={y + boxH / 2 + 4} textAnchor="middle" fontSize="9" fontWeight="700" fill={s.color}>{s.label}</text>
+            {i < steps.length - 1 && (
+              <line x1={x + boxW} y1={y + boxH / 2} x2={x + boxW + gap} y2={y + boxH / 2} stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowWF)" />
+            )}
+          </g>
+        );
+      })}
+      {/* Feedback arrow from 評価 back to 前処理 */}
+      {(() => {
+        const evalX = offsetX + 4 * (boxW + gap) + boxW / 2;
+        const preX = offsetX + 2 * (boxW + gap) + boxW / 2;
+        const arcY = 35 + boxH + 20;
+        return (
+          <g>
+            <path
+              d={`M${evalX},${35 + boxH} L${evalX},${arcY} L${preX},${arcY} L${preX},${35 + boxH}`}
+              fill="none" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" markerEnd="url(#arrowFB)"
+            />
+            <text x={(evalX + preX) / 2} y={arcY + 14} textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">反復的プロセス</text>
+          </g>
+        );
+      })()}
+      <defs>
+        <marker id="arrowWF" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8" />
+        </marker>
+        <marker id="arrowFB" viewBox="0 0 10 10" refX="5" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,10 L5,0 L10,10 Z" fill="#dc2626" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function AssociationAnalysisDiagram() {
+  const items: { label: string; cx: number; cy: number; color: string; bg: string }[] = [
+    { label: "パン", cx: 80, cy: 65, color: "#2563eb", bg: "#dbeafe" },
+    { label: "牛乳", cx: 250, cy: 65, color: "#16a34a", bg: "#dcfce7" },
+    { label: "卵", cx: 165, cy: 140, color: "#f59e0b", bg: "#fef3c7" },
+  ];
+  const r = 30;
+  return (
+    <svg viewBox="0 0 420 185" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">アソシエーション分析</text>
+      {/* Arrows between items */}
+      {/* パン → 牛乳 */}
+      <line x1={80 + r} y1="65" x2={250 - r} y2="65" stroke="#2563eb" strokeWidth="2" markerEnd="url(#arrowAssoc)" />
+      <rect x="120" y="38" width="90" height="16" fill="white" rx="3" stroke="#e2e8f0" strokeWidth="0.5" />
+      <text x="165" y="50" textAnchor="middle" fontSize="8" fontWeight="600" fill="#2563eb">信頼度: 75%</text>
+      {/* パン → 卵 */}
+      <line x1={80 + 18} y1={65 + 24} x2={165 - 18} y2={140 - 24} stroke="#16a34a" strokeWidth="1.5" markerEnd="url(#arrowAssocG)" />
+      <text x="105" y="112" fontSize="8" fill="#16a34a" fontWeight="600">支持度: 30%</text>
+      {/* 牛乳 → 卵 */}
+      <line x1={250 - 18} y1={65 + 24} x2={165 + 18} y2={140 - 24} stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#arrowAssocY)" />
+      <text x="225" y="112" fontSize="8" fill="#b45309" fontWeight="600">リフト値: 1.5</text>
+      {/* Item circles */}
+      {items.map((item, i) => (
+        <g key={i}>
+          <circle cx={item.cx} cy={item.cy} r={r} fill={item.bg} stroke={item.color} strokeWidth="2" />
+          <text x={item.cx} y={item.cy + 4} textAnchor="middle" fontSize="12" fontWeight="700" fill={item.color}>{item.label}</text>
+        </g>
+      ))}
+      {/* Example rule */}
+      <rect x="300" y="115" width="110" height="40" fill="#f8fafc" rx="6" stroke="#e2e8f0" strokeWidth="1" />
+      <text x="355" y="132" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">ルール例:</text>
+      <text x="355" y="148" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">パン → 牛乳</text>
+      <defs>
+        <marker id="arrowAssoc" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#2563eb" />
+        </marker>
+        <marker id="arrowAssocG" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#16a34a" />
+        </marker>
+        <marker id="arrowAssocY" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#f59e0b" />
+        </marker>
+      </defs>
+    </svg>
+  );
+}
+
+function GraphTheoryDiagram() {
+  const nodes: { id: number; cx: number; cy: number; color: string; bg: string }[] = [
+    { id: 1, cx: 80, cy: 45, color: "#2563eb", bg: "#dbeafe" },
+    { id: 2, cx: 180, cy: 30, color: "#2563eb", bg: "#dbeafe" },
+    { id: 3, cx: 260, cy: 55, color: "#16a34a", bg: "#dcfce7" },
+    { id: 4, cx: 80, cy: 110, color: "#2563eb", bg: "#dbeafe" },
+    { id: 5, cx: 180, cy: 115, color: "#16a34a", bg: "#dcfce7" },
+    { id: 6, cx: 260, cy: 110, color: "#16a34a", bg: "#dcfce7" },
+  ];
+  const edges: [number, number][] = [
+    [0,1],[0,3],[0,4],[1,2],[1,4],[2,5],[3,4],[4,5],
+  ];
+  const r = 18;
+  return (
+    <svg viewBox="0 0 420 175" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="#334155">グラフ理論（Graph Theory）</text>
+      <g transform="translate(45,22)">
+        {/* Edges */}
+        {edges.map(([a, b], i) => (
+          <line key={`e${i}`} x1={nodes[a].cx} y1={nodes[a].cy} x2={nodes[b].cx} y2={nodes[b].cy} stroke="#94a3b8" strokeWidth="1.5" />
+        ))}
+        {/* Nodes */}
+        {nodes.map((n, i) => (
+          <g key={`n${i}`}>
+            <circle cx={n.cx} cy={n.cy} r={r} fill={n.bg} stroke={n.color} strokeWidth="2" />
+            <text x={n.cx} y={n.cy + 4} textAnchor="middle" fontSize="11" fontWeight="700" fill={n.color}>{n.id}</text>
+          </g>
+        ))}
+        {/* Highlight node 5 (index 4) degree annotation */}
+        <circle cx={180} cy={115} r={r + 5} fill="none" stroke="#f59e0b" strokeWidth="2" strokeDasharray="4,2" />
+        <text x="215" y="130" fontSize="9" fontWeight="600" fill="#f59e0b">次数=4</text>
+      </g>
+      {/* Labels */}
+      <g transform="translate(340,40)">
+        <circle cx="10" cy="0" r="7" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" />
+        <text x="24" y="4" fontSize="9" fill="#2563eb">コミュニティA</text>
+        <circle cx="10" cy="22" r="7" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" />
+        <text x="24" y="26" fontSize="9" fill="#16a34a">コミュニティB</text>
+        <line x1="0" y1="44" x2="20" y2="44" stroke="#94a3b8" strokeWidth="1.5" />
+        <text x="24" y="48" fontSize="9" fill="#64748b">エッジ(辺)</text>
+      </g>
+      <text x="100" y="168" fontSize="9" fill="#64748b">ノード(頂点): 6</text>
+      <text x="220" y="168" fontSize="9" fill="#64748b">エッジ(辺): 8</text>
+    </svg>
+  );
+}
+
 /* ===== Export map ===== */
 
 export const mlAlgorithmDiagrams: Record<string, () => ReactNode> = {
@@ -656,6 +977,13 @@ export const mlAlgorithmDiagrams: Record<string, () => ReactNode> = {
   "ml-topic-05": DimensionReduction,
   "ml-topic-06": BiasVariance,
   "ml-topic-10": OneHotEncoding,
+  "ml-topic-12": XaiDiagram,
+  "ml-topic-13": AnomalyDetectionDiagram,
+  "ml-topic-14": TimeSeriesForecastDiagram,
+  "ml-topic-15": MlTaxonomyDiagram,
+  "ml-topic-17": RegressionVsClassification,
+  "ml-topic-22": ImbalancedDataDiagram,
+  "ml-topic-25": MlWorkflowDiagram,
   "ds-topic-21": DecisionTreeDiagram,
   "ds-topic-22": SvmDiagram,
   "ds-topic-23": KnnDiagram,
@@ -663,6 +991,6 @@ export const mlAlgorithmDiagrams: Record<string, () => ReactNode> = {
   "ds-topic-25": CrossValidationDiagram,
   "ds-topic-26": ConfusionMatrix,
   "ds-topic-51": ClusteringDiagram,
-  "ml-topic-15": MlTaxonomyDiagram,
-  "ml-topic-17": RegressionVsClassification,
+  "ds-topic-52": AssociationAnalysisDiagram,
+  "ds-topic-53": GraphTheoryDiagram,
 };

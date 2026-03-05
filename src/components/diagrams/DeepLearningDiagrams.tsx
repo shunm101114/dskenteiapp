@@ -584,18 +584,531 @@ function ReinforcementLearningDiagram() {
   );
 }
 
+function DiffusionModelDiagram() {
+  const frameW = 60;
+  const frameH = 50;
+  const gap = 16;
+  const startX = 30;
+  const forwardY = 32;
+  const reverseY = 115;
+  const noiseLabels = ["クリーン", "少しノイズ", "ノイズ多", "ほぼノイズ", "純粋ノイズ"];
+  const noiseFills = ["#dbeafe", "#bfdbfe", "#a5b4c7", "#8a94a3", "#64748b"];
+
+  return (
+    <svg viewBox="0 0 420 195" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">拡散モデル（Diffusion Model）</text>
+      <defs>
+        <marker id="arrowDiff" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+        <marker id="arrowDiffR" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+          <path d="M8,0 L0,3 L8,6" fill="#16a34a" />
+        </marker>
+      </defs>
+
+      {/* Forward process label */}
+      <text x="210" y="28" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">前方過程（ノイズ追加）→</text>
+
+      {/* Forward: clean → noisy */}
+      {noiseLabels.map((label, i) => {
+        const x = startX + i * (frameW + gap);
+        return (
+          <g key={`fwd-${i}`}>
+            <rect x={x} y={forwardY} width={frameW} height={frameH} fill={noiseFills[i]} stroke="#94a3b8" strokeWidth="1.2" rx="4" />
+            {/* Noise dots */}
+            {Array.from({length: i * 6}, (_, d) => (
+              <circle key={d}
+                cx={x + 8 + (d * 17) % (frameW - 16)}
+                cy={forwardY + 8 + (d * 13) % (frameH - 16)}
+                r="2" fill="white" opacity={0.4 + i * 0.12} />
+            ))}
+            <text x={x + frameW / 2} y={forwardY + frameH + 12} textAnchor="middle" fontSize="7" fill="#64748b">{label}</text>
+            {i < 4 && (
+              <line x1={x + frameW + 2} y1={forwardY + frameH / 2} x2={x + frameW + gap - 2} y2={forwardY + frameH / 2}
+                stroke="#64748b" strokeWidth="1.2" markerEnd="url(#arrowDiff)" />
+            )}
+          </g>
+        );
+      })}
+
+      {/* Reverse process label */}
+      <text x="210" y="112" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">← 逆過程（ノイズ除去）</text>
+
+      {/* Reverse: noise → clean */}
+      {[...noiseLabels].reverse().map((_label, i) => {
+        const x = startX + i * (frameW + gap);
+        const ri = 4 - i;
+        const revLabels = ["純粋ノイズ", "ノイズ多", "少しノイズ", "ほぼクリーン", "生成画像"];
+        return (
+          <g key={`rev-${i}`}>
+            <rect x={x} y={reverseY} width={frameW} height={frameH} fill={noiseFills[ri]} stroke="#16a34a" strokeWidth="1.2" rx="4" />
+            {Array.from({length: ri * 6}, (_, d) => (
+              <circle key={d}
+                cx={x + 8 + (d * 17) % (frameW - 16)}
+                cy={reverseY + 8 + (d * 13) % (frameH - 16)}
+                r="2" fill="white" opacity={0.4 + ri * 0.12} />
+            ))}
+            <text x={x + frameW / 2} y={reverseY + frameH + 12} textAnchor="middle" fontSize="7" fill="#64748b">{revLabels[i]}</text>
+            {i < 4 && (
+              <line x1={x + frameW + 2} y1={reverseY + frameH / 2} x2={x + frameW + gap - 2} y2={reverseY + frameH / 2}
+                stroke="#16a34a" strokeWidth="1.2" markerEnd="url(#arrowDiff)" />
+            )}
+          </g>
+        );
+      })}
+
+      <text x="210" y="190" textAnchor="middle" fontSize="8" fill="#64748b">学習: ノイズ除去を繰り返し、データ分布からサンプリング</text>
+    </svg>
+  );
+}
+
+function NlpPipelineDiagram() {
+  const steps = ["生テキスト", "トークン化", "ストップワード\n除去", "ステミング/\nレンマ化", "特徴量化\n(TF-IDF/BoW)"];
+  const colors = ["#2563eb", "#7c3aed", "#f59e0b", "#16a34a", "#dc2626"];
+  const bgColors = ["#dbeafe", "#f3e8ff", "#fef3c7", "#dcfce7", "#fecaca"];
+  const boxW = 68;
+  const boxH = 36;
+  const gap = 10;
+  const startX = 8;
+  const cy = 60;
+
+  return (
+    <svg viewBox="0 0 420 120" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">テキスト前処理パイプライン</text>
+      <defs>
+        <marker id="arrowNLP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+      </defs>
+
+      {steps.map((step, i) => {
+        const x = startX + i * (boxW + gap);
+        const lines = step.split("\n");
+        return (
+          <g key={i}>
+            <rect x={x} y={cy - boxH / 2} width={boxW} height={boxH} fill={bgColors[i]} stroke={colors[i]} strokeWidth="1.5" rx="6" />
+            {lines.length === 1 ? (
+              <text x={x + boxW / 2} y={cy + 4} textAnchor="middle" fontSize="8" fontWeight="600" fill={colors[i]}>{lines[0]}</text>
+            ) : (
+              <>
+                <text x={x + boxW / 2} y={cy - 2} textAnchor="middle" fontSize="7.5" fontWeight="600" fill={colors[i]}>{lines[0]}</text>
+                <text x={x + boxW / 2} y={cy + 9} textAnchor="middle" fontSize="7.5" fontWeight="600" fill={colors[i]}>{lines[1]}</text>
+              </>
+            )}
+            {i < steps.length - 1 && (
+              <line x1={x + boxW + 1} y1={cy} x2={x + boxW + gap - 1} y2={cy}
+                stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowNLP)" />
+            )}
+          </g>
+        );
+      })}
+
+      <text x="210" y="100" textAnchor="middle" fontSize="8" fill="#64748b">例: "The cats are running" → ["cat", "run"] → TF-IDFベクトル</text>
+      <text x="210" y="112" textAnchor="middle" fontSize="8" fill="#64748b">各段階で不要情報を除去し、モデルが扱いやすい形式に変換</text>
+    </svg>
+  );
+}
+
+function WordEmbeddingDiagram() {
+  const words = [
+    { label: "王(King)", x: 280, y: 45, color: "#2563eb" },
+    { label: "女王(Queen)", x: 310, y: 100, color: "#dc2626" },
+    { label: "男(Man)", x: 130, y: 55, color: "#2563eb" },
+    { label: "女(Woman)", x: 160, y: 110, color: "#dc2626" },
+  ];
+
+  return (
+    <svg viewBox="0 0 420 180" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">単語埋め込み（Word Embedding）</text>
+      <defs>
+        <marker id="arrowWE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+        <marker id="arrowWEr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#f59e0b" />
+        </marker>
+      </defs>
+
+      {/* Axes */}
+      <line x1="40" y1="135" x2="360" y2="135" stroke="#e2e8f0" strokeWidth="1" />
+      <line x1="40" y1="30" x2="40" y2="135" stroke="#e2e8f0" strokeWidth="1" />
+      <text x="370" y="138" fontSize="7" fill="#94a3b8">次元1</text>
+      <text x="42" y="28" fontSize="7" fill="#94a3b8">次元2</text>
+
+      {/* Word points */}
+      {words.map((w, i) => (
+        <g key={i}>
+          <circle cx={w.x} cy={w.y} r="5" fill={w.color} />
+          <text x={w.x} y={w.y - 10} textAnchor="middle" fontSize="9" fontWeight="600" fill={w.color}>{w.label}</text>
+        </g>
+      ))}
+
+      {/* Gender vectors (vertical dashed) */}
+      <line x1="130" y1="60" x2="160" y2="105" stroke="#9333ea" strokeWidth="1.3" strokeDasharray="4,3" markerEnd="url(#arrowWE)" />
+      <line x1="280" y1="50" x2="310" y2="95" stroke="#9333ea" strokeWidth="1.3" strokeDasharray="4,3" markerEnd="url(#arrowWE)" />
+
+      {/* Royalty vectors (horizontal dashed) */}
+      <line x1="135" y1="55" x2="275" y2="45" stroke="#f59e0b" strokeWidth="1.3" strokeDasharray="4,3" markerEnd="url(#arrowWEr)" />
+      <line x1="165" y1="110" x2="305" y2="100" stroke="#f59e0b" strokeWidth="1.3" strokeDasharray="4,3" markerEnd="url(#arrowWEr)" />
+
+      {/* Labels for relationships */}
+      <text x="90" y="88" fontSize="7.5" fill="#9333ea" transform="rotate(-55, 90, 88)">性別方向</text>
+      <text x="200" y="42" fontSize="7.5" fill="#f59e0b">王族方向</text>
+
+      {/* Vector arithmetic */}
+      <rect x="60" y="148" width="300" height="22" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1" rx="5" />
+      <text x="210" y="163" textAnchor="middle" fontSize="9" fontWeight="600" fill="#b45309">王 − 男 + 女 ≈ 女王</text>
+
+      <text x="210" y="178" textAnchor="middle" fontSize="8" fill="#64748b">意味の近さ = ベクトルの近さ</text>
+    </svg>
+  );
+}
+
+function BertArchitectureDiagram() {
+  const blockW = 260;
+  const cx = 210;
+
+  return (
+    <svg viewBox="0 0 420 210" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">BERT アーキテクチャ</text>
+      <defs>
+        <marker id="arrowBERT" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+      </defs>
+
+      {/* Input tokens */}
+      <rect x={cx - blockW / 2} y="25" width={blockW} height="24" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.2" rx="5" />
+      <text x={cx} y="41" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">[CLS] トークン1 トークン2 ... [MASK] ... [SEP]</text>
+
+      {/* Arrow */}
+      <line x1={cx} y1="49" x2={cx} y2="60" stroke="#64748b" strokeWidth="1.2" markerEnd="url(#arrowBERT)" />
+
+      {/* Token + Position Embedding */}
+      <rect x={cx - blockW / 2} y="62" width={blockW} height="24" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="5" />
+      <text x={cx} y="78" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">Token + Segment + Position Embedding</text>
+
+      {/* Arrow */}
+      <line x1={cx} y1="86" x2={cx} y2="97" stroke="#64748b" strokeWidth="1.2" markerEnd="url(#arrowBERT)" />
+
+      {/* Transformer Encoder x12 */}
+      <rect x={cx - blockW / 2} y="99" width={blockW} height="34" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.8" rx="6" />
+      <text x={cx} y="115" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">Transformer Encoder ×12</text>
+      <text x={cx} y="128" textAnchor="middle" fontSize="8" fill="#b45309">双方向 Self-Attention</text>
+
+      {/* Bidirectional arrows */}
+      <text x={cx - blockW / 2 - 16} y="120" fontSize="14" fill="#f59e0b">←→</text>
+      <text x={cx + blockW / 2 + 4} y="120" fontSize="14" fill="#f59e0b">←→</text>
+
+      {/* Arrow */}
+      <line x1={cx - 60} y1="133" x2={cx - 60} y2="146" stroke="#64748b" strokeWidth="1.2" markerEnd="url(#arrowBERT)" />
+      <line x1={cx + 60} y1="133" x2={cx + 60} y2="146" stroke="#64748b" strokeWidth="1.2" markerEnd="url(#arrowBERT)" />
+
+      {/* Outputs */}
+      <rect x={cx - 130} y="148" width="100" height="24" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="5" />
+      <text x={cx - 80} y="164" textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">[CLS] → 分類</text>
+
+      <rect x={cx + 30} y="148" width="100" height="24" fill="#f3e8ff" stroke="#9333ea" strokeWidth="1.5" rx="5" />
+      <text x={cx + 80} y="164" textAnchor="middle" fontSize="8" fontWeight="600" fill="#9333ea">[MASK] → 単語予測</text>
+
+      {/* Pre-training / Fine-tuning labels */}
+      <rect x="15" y="90" width="52" height="20" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1" rx="4" />
+      <text x="41" y="104" textAnchor="middle" fontSize="8" fontWeight="600" fill="#b45309">事前学習</text>
+
+      <rect x="15" y="148" width="52" height="20" fill="#dcfce7" stroke="#16a34a" strokeWidth="1" rx="4" />
+      <text x="41" y="162" textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">Fine-tune</text>
+
+      {/* Bottom note */}
+      <text x="210" y="190" textAnchor="middle" fontSize="8" fill="#64748b">事前学習: MLM + NSP → ファインチューニング: 下流タスクに適応</text>
+      <text x="210" y="202" textAnchor="middle" fontSize="8" fill="#64748b">双方向で文脈を理解（GPTは左→右のみ）</text>
+    </svg>
+  );
+}
+
+function RagPipelineDiagram() {
+  return (
+    <svg viewBox="0 0 420 190" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">RAG（Retrieval-Augmented Generation）</text>
+      <defs>
+        <marker id="arrowRAG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+      </defs>
+
+      {/* Question */}
+      <rect x="15" y="50" width="65" height="30" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="6" />
+      <text x="47" y="69" textAnchor="middle" fontSize="10" fontWeight="600" fill="#2563eb">質問</text>
+
+      {/* Arrow question -> search */}
+      <line x1="80" y1="65" x2="108" y2="65" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
+
+      {/* Search engine */}
+      <rect x="110" y="45" width="80" height="40" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" rx="6" />
+      <text x="150" y="63" textAnchor="middle" fontSize="9" fontWeight="600" fill="#b45309">検索</text>
+      <text x="150" y="76" textAnchor="middle" fontSize="9" fontWeight="600" fill="#b45309">エンジン</text>
+
+      {/* Document database (side) */}
+      <rect x="115" y="110" width="70" height="45" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.5" rx="4" />
+      <text x="150" y="128" textAnchor="middle" fontSize="8" fontWeight="600" fill="#64748b">文書DB</text>
+      {[0, 1, 2].map(i => (
+        <g key={i}>
+          <rect x={122} y={132 + i * 7} width="56" height="5" fill="#e2e8f0" rx="1" />
+        </g>
+      ))}
+
+      {/* Arrow DB -> search */}
+      <line x1="150" y1="110" x2="150" y2="87" stroke="#94a3b8" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
+
+      {/* Arrow search -> retrieved docs */}
+      <line x1="190" y1="65" x2="213" y2="65" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
+
+      {/* Retrieved documents */}
+      <rect x="215" y="42" width="72" height="46" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="6" />
+      <text x="251" y="59" textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">関連文書</text>
+      <text x="251" y="71" textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">を取得</text>
+      <text x="251" y="83" textAnchor="middle" fontSize="7" fill="#16a34a">Top-K件</text>
+
+      {/* Arrow docs -> LLM */}
+      <line x1="287" y1="65" x2="308" y2="65" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
+
+      {/* Question also goes to LLM */}
+      <path d="M47,80 L47,100 Q47,108 55,108 L310,108 Q318,108 318,100 L318,82" fill="none" stroke="#2563eb" strokeWidth="1" strokeDasharray="4,3" markerEnd="url(#arrowRAG)" />
+      <text x="180" y="105" textAnchor="middle" fontSize="7" fill="#2563eb">質問も入力</text>
+
+      {/* LLM */}
+      <rect x="310" y="42" width="70" height="46" fill="#f3e8ff" stroke="#9333ea" strokeWidth="1.8" rx="8" />
+      <text x="345" y="62" textAnchor="middle" fontSize="11" fontWeight="700" fill="#9333ea">LLM</text>
+      <text x="345" y="78" textAnchor="middle" fontSize="7.5" fill="#9333ea">文書+質問で生成</text>
+
+      {/* Arrow LLM -> answer */}
+      <line x1="380" y1="65" x2="393" y2="65" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowRAG)" />
+
+      {/* Answer */}
+      <rect x="395" y="50" width="20" height="30" fill="#fecaca" stroke="#dc2626" strokeWidth="1.5" rx="4" />
+      <text x="405" y="69" textAnchor="middle" fontSize="8" fontWeight="700" fill="#dc2626" transform="rotate(-90, 405, 69)">回答</text>
+
+      {/* Bottom label */}
+      <rect x="110" y="163" width="200" height="18" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1" rx="4" />
+      <text x="210" y="176" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">Retrieval-Augmented Generation</text>
+
+      <text x="210" y="188" textAnchor="middle" fontSize="7.5" fill="#64748b">外部知識を検索して回答精度を向上 → ハルシネーション軽減</text>
+    </svg>
+  );
+}
+
+function NlpBasicsDiagram() {
+  const panelW = 120;
+  const panelH = 95;
+  const gap = 14;
+  const startX = 18;
+  const startY = 28;
+
+  return (
+    <svg viewBox="0 0 420 155" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">NLP基礎 — 主要タスク</text>
+
+      {/* Panel 1: Sentiment Analysis */}
+      <rect x={startX} y={startY} width={panelW} height={panelH} fill="#f8fafc" stroke="#2563eb" strokeWidth="1.5" rx="6" />
+      <text x={startX + panelW / 2} y={startY + 16} textAnchor="middle" fontSize="9" fontWeight="700" fill="#2563eb">感情分析</text>
+      <rect x={startX + 10} y={startY + 24} width={panelW - 20} height="18" fill="#dbeafe" stroke="#93c5fd" strokeWidth="1" rx="3" />
+      <text x={startX + panelW / 2} y={startY + 37} textAnchor="middle" fontSize="7.5" fill="#334155">"この映画は最高！"</text>
+      <text x={startX + panelW / 2} y={startY + 52} textAnchor="middle" fontSize="12" fill="#64748b">↓</text>
+      <rect x={startX + 20} y={startY + 58} width={panelW - 40} height="18" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.2" rx="3" />
+      <text x={startX + panelW / 2} y={startY + 71} textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">Positive ✓</text>
+      <text x={startX + panelW / 2} y={startY + 88} textAnchor="middle" fontSize="7" fill="#64748b">テキスト→感情極性</text>
+
+      {/* Panel 2: NER */}
+      <rect x={startX + panelW + gap} y={startY} width={panelW} height={panelH} fill="#f8fafc" stroke="#f59e0b" strokeWidth="1.5" rx="6" />
+      <text x={startX + panelW + gap + panelW / 2} y={startY + 16} textAnchor="middle" fontSize="9" fontWeight="700" fill="#b45309">固有表現認識</text>
+      <rect x={startX + panelW + gap + 5} y={startY + 24} width={panelW - 10} height="36" fill="#fefce8" rx="3" />
+      {/* Colored entities in text */}
+      <text x={startX + panelW + gap + 10} y={startY + 38} fontSize="8" fill="#334155">
+        <tspan fill="#2563eb" fontWeight="600">[東京]</tspan>
+        <tspan>で</tspan>
+        <tspan fill="#dc2626" fontWeight="600">[田中]</tspan>
+        <tspan>が</tspan>
+      </text>
+      <text x={startX + panelW + gap + 10} y={startY + 51} fontSize="8" fill="#334155">
+        <tspan fill="#16a34a" fontWeight="600">[3月]</tspan>
+        <tspan>に発表した</tspan>
+      </text>
+      <rect x={startX + panelW + gap + 8} y={startY + 62} width="32" height="12" fill="#dbeafe" rx="2" />
+      <text x={startX + panelW + gap + 24} y={startY + 71} textAnchor="middle" fontSize="6.5" fill="#2563eb">地名</text>
+      <rect x={startX + panelW + gap + 44} y={startY + 62} width="32" height="12" fill="#fecaca" rx="2" />
+      <text x={startX + panelW + gap + 60} y={startY + 71} textAnchor="middle" fontSize="6.5" fill="#dc2626">人名</text>
+      <rect x={startX + panelW + gap + 80} y={startY + 62} width="32" height="12" fill="#dcfce7" rx="2" />
+      <text x={startX + panelW + gap + 96} y={startY + 71} textAnchor="middle" fontSize="6.5" fill="#16a34a">日時</text>
+      <text x={startX + panelW + gap + panelW / 2} y={startY + 88} textAnchor="middle" fontSize="7" fill="#64748b">テキスト→エンティティ抽出</text>
+
+      {/* Panel 3: Machine Translation */}
+      <rect x={startX + 2 * (panelW + gap)} y={startY} width={panelW} height={panelH} fill="#f8fafc" stroke="#9333ea" strokeWidth="1.5" rx="6" />
+      <text x={startX + 2 * (panelW + gap) + panelW / 2} y={startY + 16} textAnchor="middle" fontSize="9" fontWeight="700" fill="#9333ea">機械翻訳</text>
+      <rect x={startX + 2 * (panelW + gap) + 10} y={startY + 24} width={panelW - 20} height="18" fill="#f3e8ff" stroke="#c4b5fd" strokeWidth="1" rx="3" />
+      <text x={startX + 2 * (panelW + gap) + panelW / 2} y={startY + 37} textAnchor="middle" fontSize="7.5" fill="#334155">"猫が好きです"</text>
+      <text x={startX + 2 * (panelW + gap) + panelW / 2} y={startY + 52} textAnchor="middle" fontSize="12" fill="#64748b">↓</text>
+      <rect x={startX + 2 * (panelW + gap) + 10} y={startY + 58} width={panelW - 20} height="18" fill="#dbeafe" stroke="#93c5fd" strokeWidth="1.2" rx="3" />
+      <text x={startX + 2 * (panelW + gap) + panelW / 2} y={startY + 71} textAnchor="middle" fontSize="8" fontWeight="600" fill="#2563eb">"I like cats"</text>
+      <text x={startX + 2 * (panelW + gap) + panelW / 2} y={startY + 88} textAnchor="middle" fontSize="7" fill="#64748b">日本語→English</text>
+
+      <text x="210" y="145" textAnchor="middle" fontSize="8" fill="#64748b">自然言語処理: テキストデータから意味を抽出・変換するAI技術</text>
+    </svg>
+  );
+}
+
+function ImageRecognitionDiagram() {
+  return (
+    <svg viewBox="0 0 420 150" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">画像認識の基本フロー</text>
+      <defs>
+        <marker id="arrowIMG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+      </defs>
+
+      {/* Input image */}
+      <rect x="10" y="35" width="60" height="55" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.5" rx="4" />
+      {/* Grid to represent image */}
+      {[0, 1, 2, 3].map(r => [0, 1, 2, 3].map(c => (
+        <rect key={`${r}-${c}`} x={15 + c * 13} y={40 + r * 11} width="11" height="9"
+          fill={((r + c) % 3 === 0) ? "#93c5fd" : ((r + c) % 3 === 1) ? "#bfdbfe" : "#dbeafe"} rx="1" />
+      )))}
+      <text x="40" y="103" textAnchor="middle" fontSize="8" fill="#64748b">入力画像</text>
+
+      {/* Arrow */}
+      <line x1="72" y1="62" x2="88" y2="62" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowIMG)" />
+
+      {/* Feature extraction (Conv layers) */}
+      <rect x="90" y="32" width="90" height="60" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" rx="6" />
+      <text x="135" y="52" textAnchor="middle" fontSize="9" fontWeight="600" fill="#b45309">特徴抽出</text>
+      <text x="135" y="65" textAnchor="middle" fontSize="7.5" fill="#64748b">Conv + Pool</text>
+      <text x="135" y="77" textAnchor="middle" fontSize="7.5" fill="#64748b">×複数層</text>
+      <text x="135" y="103" textAnchor="middle" fontSize="8" fill="#f59e0b">畳み込み層</text>
+
+      {/* Arrow */}
+      <line x1="180" y1="62" x2="196" y2="62" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowIMG)" />
+
+      {/* Classification head */}
+      <rect x="198" y="38" width="75" height="48" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" rx="6" />
+      <text x="235" y="57" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">分類ヘッド</text>
+      <text x="235" y="72" textAnchor="middle" fontSize="7.5" fill="#64748b">全結合+Softmax</text>
+      <text x="235" y="103" textAnchor="middle" fontSize="8" fill="#16a34a">FC層</text>
+
+      {/* Arrow */}
+      <line x1="273" y1="62" x2="289" y2="62" stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowIMG)" />
+
+      {/* Prediction results with confidence bars */}
+      <rect x="291" y="30" width="120" height="75" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.2" rx="6" />
+      <text x="351" y="46" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">予測結果</text>
+
+      {/* Cat bar - 95% */}
+      <text x="300" y="62" fontSize="8" fontWeight="600" fill="#334155">猫</text>
+      <rect x="318" y="54" width="85" height="10" fill="#e2e8f0" rx="2" />
+      <rect x="318" y="54" width={85 * 0.95} height="10" fill="#2563eb" rx="2" />
+      <text x="398" y="63" fontSize="7" fill="#2563eb">95%</text>
+
+      {/* Dog bar - 3% */}
+      <text x="300" y="78" fontSize="8" fontWeight="600" fill="#334155">犬</text>
+      <rect x="318" y="70" width="85" height="10" fill="#e2e8f0" rx="2" />
+      <rect x="318" y="70" width={85 * 0.03} height="10" fill="#f59e0b" rx="2" />
+      <text x="326" y="79" fontSize="7" fill="#f59e0b">3%</text>
+
+      {/* Bird bar - 2% */}
+      <text x="300" y="94" fontSize="8" fontWeight="600" fill="#334155">鳥</text>
+      <rect x="318" y="86" width="85" height="10" fill="#e2e8f0" rx="2" />
+      <rect x="318" y="86" width={85 * 0.02} height="10" fill="#16a34a" rx="2" />
+      <text x="324" y="95" fontSize="7" fill="#16a34a">2%</text>
+
+      <text x="351" y="118" textAnchor="middle" fontSize="8" fill="#64748b">信頼度スコア</text>
+
+      <text x="210" y="140" textAnchor="middle" fontSize="8" fill="#64748b">画像→特徴マップ→クラス確率: 最も高い確率のクラスを予測</text>
+    </svg>
+  );
+}
+
+function LlmArchitectureDiagram() {
+  const steps = ["テキスト入力", "トークン化", "埋め込み", "Transformer\n層 ×N", "次の単語\n予測"];
+  const colors = ["#2563eb", "#7c3aed", "#f59e0b", "#dc2626", "#16a34a"];
+  const bgColors = ["#dbeafe", "#f3e8ff", "#fef3c7", "#fecaca", "#dcfce7"];
+  const boxW = 66;
+  const boxH = 40;
+  const gap = 10;
+  const startX = 10;
+  const cy = 55;
+
+  return (
+    <svg viewBox="0 0 420 190" className="topic-diagram">
+      <text x="210" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">LLM（大規模言語モデル）の仕組み</text>
+      <defs>
+        <marker id="arrowLLM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#64748b" />
+        </marker>
+      </defs>
+
+      {steps.map((step, i) => {
+        const x = startX + i * (boxW + gap);
+        const lines = step.split("\n");
+        return (
+          <g key={i}>
+            <rect x={x} y={cy - boxH / 2} width={boxW} height={boxH} fill={bgColors[i]} stroke={colors[i]} strokeWidth="1.5" rx="6" />
+            {lines.length === 1 ? (
+              <text x={x + boxW / 2} y={cy + 4} textAnchor="middle" fontSize="8" fontWeight="600" fill={colors[i]}>{lines[0]}</text>
+            ) : (
+              <>
+                <text x={x + boxW / 2} y={cy - 2} textAnchor="middle" fontSize="8" fontWeight="600" fill={colors[i]}>{lines[0]}</text>
+                <text x={x + boxW / 2} y={cy + 10} textAnchor="middle" fontSize="8" fontWeight="600" fill={colors[i]}>{lines[1]}</text>
+              </>
+            )}
+            {i < steps.length - 1 && (
+              <line x1={x + boxW + 1} y1={cy} x2={x + boxW + gap - 1} y2={cy}
+                stroke="#64748b" strokeWidth="1.3" markerEnd="url(#arrowLLM)" />
+            )}
+          </g>
+        );
+      })}
+
+      {/* Scale label */}
+      <rect x="130" y="82" width="160" height="18" fill="#fecaca" stroke="#dc2626" strokeWidth="1" rx="4" />
+      <text x="210" y="94" textAnchor="middle" fontSize="8" fontWeight="600" fill="#dc2626">数十億〜数兆パラメータ</text>
+
+      {/* Example */}
+      <rect x="40" y="115" width="340" height="40" fill="#f8fafc" stroke="#94a3b8" strokeWidth="1.2" rx="6" />
+      <text x="210" y="130" textAnchor="middle" fontSize="9" fontWeight="700" fill="#334155">例: 次の単語予測</text>
+
+      <text x="70" y="147" fontSize="9" fill="#2563eb" fontWeight="600">"今日の天気は"</text>
+      <text x="175" y="147" fontSize="14" fill="#64748b">→</text>
+      <rect x="195" y="137" width="55" height="16" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.2" rx="3" />
+      <text x="222" y="149" textAnchor="middle" fontSize="9" fontWeight="700" fill="#16a34a">"晴れ"</text>
+      <text x="265" y="149" fontSize="8" fill="#64748b">(確率: 0.42)</text>
+
+      {/* Key concepts */}
+      <text x="50" y="172" fontSize="8" fill="#64748b">自己回帰: 1トークンずつ順に生成</text>
+      <text x="230" y="172" fontSize="8" fill="#64748b">スケール則: パラメータ数↑ → 性能↑</text>
+
+      <text x="210" y="186" textAnchor="middle" fontSize="8" fill="#64748b">GPT系 / LLaMA / Gemini など主要モデルはTransformerベース</text>
+    </svg>
+  );
+}
+
 /* ───────── Export map ───────── */
 
 export const deepLearningDiagrams: Record<string, () => ReactNode> = {
   "ml-topic-02": NeuralNetwork,
+  "ml-topic-07": NlpBasicsDiagram,
+  "ml-topic-08": ImageRecognitionDiagram,
   "ml-topic-09": TransformerSimple,
-  "ds-topic-32": CnnFlow,
-  "ds-topic-34": AttentionDiagram,
+  "ml-topic-24": LlmArchitectureDiagram,
   "ds-topic-30": TransferLearningDiagram,
   "ds-topic-31": ActivationFunctionsDiagram,
+  "ds-topic-32": CnnFlow,
   "ds-topic-33": RnnLstmDiagram,
+  "ds-topic-34": AttentionDiagram,
   "ds-topic-35": GanDiagram,
   "ds-topic-37": AutoencoderDiagram,
   "ds-topic-38": ObjectDetectionDiagram,
+  "ds-topic-39": DiffusionModelDiagram,
+  "ds-topic-40": NlpPipelineDiagram,
+  "ds-topic-41": WordEmbeddingDiagram,
+  "ds-topic-42": BertArchitectureDiagram,
+  "ds-topic-48": RagPipelineDiagram,
   "ds-topic-50": ReinforcementLearningDiagram,
 };

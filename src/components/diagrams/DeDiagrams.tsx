@@ -560,6 +560,299 @@ function MessageQueueDiagram() {
   );
 }
 
+function GitBranchDiagram() {
+  return (
+    <svg viewBox="0 0 420 140" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">Git分岐とマージ</text>
+      <defs>
+        <marker id="arrowGit" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8" />
+        </marker>
+      </defs>
+      {/* Main branch line */}
+      <line x1="30" y1="50" x2="390" y2="50" stroke="#2563eb" strokeWidth="2.5" />
+      <text x="30" y="38" fontSize="10" fontWeight="700" fill="#2563eb">main</text>
+      {/* Main branch commits */}
+      {[60, 120, 300, 360].map((cx, i) => (
+        <circle key={i} cx={cx} cy={50} r="7" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" />
+      ))}
+      {/* Feature branch */}
+      <line x1="120" y1="50" x2="160" y2="90" stroke="#16a34a" strokeWidth="2" />
+      <line x1="160" y1="90" x2="260" y2="90" stroke="#16a34a" strokeWidth="2.5" />
+      <line x1="260" y1="90" x2="300" y2="50" stroke="#16a34a" strokeWidth="2" />
+      <text x="160" y="115" fontSize="10" fontWeight="700" fill="#16a34a">feature</text>
+      {/* Feature branch commits */}
+      {[190, 230].map((cx, i) => (
+        <circle key={i} cx={cx} cy={90} r="7" fill="#dcfce7" stroke="#16a34a" strokeWidth="2" />
+      ))}
+      {/* Merge point */}
+      <circle cx={300} cy={50} r="9" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2.5" />
+      <text x="300" y="38" fontSize="9" fontWeight="700" fill="#b45309">merge</text>
+      {/* Labels */}
+      <text x="60" y="70" textAnchor="middle" fontSize="7" fill="#64748b">commit</text>
+      <text x="120" y="70" textAnchor="middle" fontSize="7" fill="#64748b">分岐点</text>
+      <text x="190" y="80" textAnchor="middle" fontSize="7" fill="#64748b">c1</text>
+      <text x="230" y="80" textAnchor="middle" fontSize="7" fill="#64748b">c2</text>
+      <text x="210" y="135" textAnchor="middle" fontSize="9" fill="#64748b">featureブランチで作業後、mainにマージ</text>
+    </svg>
+  );
+}
+
+function CiaTriangleDiagram() {
+  const cx = 200, cy = 95;
+  return (
+    <svg viewBox="0 0 400 190" className="topic-diagram">
+      <text x="200" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">CIA三原則（情報セキュリティ）</text>
+      {/* Triangle */}
+      <polygon points="200,35 80,155 320,155" fill="none" stroke="#e2e8f0" strokeWidth="2" />
+      {/* C vertex - top */}
+      <circle cx="200" cy="35" r="22" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" />
+      <text x="200" y="33" textAnchor="middle" fontSize="16" fontWeight="800" fill="#2563eb">C</text>
+      <text x="200" y="46" textAnchor="middle" fontSize="6" fontWeight="600" fill="#2563eb">機密性</text>
+      <text x="248" y="30" fontSize="8" fill="#2563eb">Confidentiality</text>
+      <text x="248" y="42" fontSize="8" fill="#64748b">許可された人のみアクセス</text>
+      {/* I vertex - bottom left */}
+      <circle cx="80" cy="155" r="22" fill="#dcfce7" stroke="#16a34a" strokeWidth="2" />
+      <text x="80" y="153" textAnchor="middle" fontSize="16" fontWeight="800" fill="#16a34a">I</text>
+      <text x="80" y="166" textAnchor="middle" fontSize="6" fontWeight="600" fill="#16a34a">完全性</text>
+      <text x="18" y="148" fontSize="8" fill="#16a34a" textAnchor="end">Integrity</text>
+      <text x="18" y="160" fontSize="8" fill="#64748b" textAnchor="end">改ざんされない</text>
+      {/* A vertex - bottom right */}
+      <circle cx="320" cy="155" r="22" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2" />
+      <text x="320" y="153" textAnchor="middle" fontSize="16" fontWeight="800" fill="#b45309">A</text>
+      <text x="320" y="166" textAnchor="middle" fontSize="6" fontWeight="600" fill="#b45309">可用性</text>
+      <text x="360" y="148" fontSize="8" fill="#b45309">Availability</text>
+      <text x="360" y="160" fontSize="8" fill="#64748b">必要時にアクセス可能</text>
+      {/* Center text */}
+      <text x={cx} y={cy} textAnchor="middle" fontSize="10" fontWeight="700" fill="#334155">情報</text>
+      <text x={cx} y={cy + 13} textAnchor="middle" fontSize="10" fontWeight="700" fill="#334155">セキュリティ</text>
+      <text x="200" y="185" textAnchor="middle" fontSize="9" fill="#64748b">3つをバランスよく確保することが重要</text>
+    </svg>
+  );
+}
+
+function NoSqlTypesDiagram() {
+  const types = [
+    { label: "キーバリュー型", example: "Redis", desc: "key → value", color: "#2563eb", bg: "#dbeafe", x: 10, y: 30 },
+    { label: "ドキュメント型", example: "MongoDB", desc: "{ JSON }", color: "#16a34a", bg: "#dcfce7", x: 215, y: 30 },
+    { label: "カラム型", example: "Cassandra", desc: "列グループ", color: "#f59e0b", bg: "#fef3c7", x: 10, y: 100 },
+    { label: "グラフ型", example: "Neo4j", desc: "○─○─○", color: "#9333ea", bg: "#f3e8ff", x: 215, y: 100 },
+  ];
+  return (
+    <svg viewBox="0 0 420 185" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">NoSQLの種類</text>
+      {types.map((t, i) => (
+        <g key={i}>
+          <rect x={t.x} y={t.y} width="195" height="58" fill={t.bg} rx="8" stroke={t.color} strokeWidth="2" />
+          <text x={t.x + 97} y={t.y + 20} textAnchor="middle" fontSize="10" fontWeight="700" fill={t.color}>{t.label}</text>
+          <text x={t.x + 97} y={t.y + 35} textAnchor="middle" fontSize="12" fontWeight="600" fill="#334155">{t.desc}</text>
+          <text x={t.x + 97} y={t.y + 50} textAnchor="middle" fontSize="9" fill="#64748b">例: {t.example}</text>
+        </g>
+      ))}
+      <rect x="80" y="166" width="260" height="18" fill="#f1f5f9" rx="4" />
+      <text x="210" y="179" textAnchor="middle" fontSize="9" fontWeight="600" fill="#64748b">CAP定理に基づく選択</text>
+    </svg>
+  );
+}
+
+function StructuredVsUnstructuredDiagram() {
+  return (
+    <svg viewBox="0 0 420 185" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">構造化 vs 非構造化データ</text>
+      {/* Structured */}
+      <g>
+        <rect x="10" y="30" width="120" height="105" fill="#dbeafe" rx="8" stroke="#2563eb" strokeWidth="2" />
+        <text x="70" y="48" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">構造化データ</text>
+        {/* Mini table */}
+        {[0, 1, 2].map((row) => (
+          <g key={row}>
+            {[0, 1, 2].map((col) => (
+              <rect key={col} x={22 + col * 32} y={58 + row * 18} width="30" height="16" fill={row === 0 ? "#93c5fd" : "white"} stroke="#2563eb" strokeWidth="0.8" rx="1" />
+            ))}
+          </g>
+        ))}
+        <text x="70" y="69" textAnchor="middle" fontSize="6" fill="white" fontWeight="600">ID | 名前 | 値</text>
+        <text x="70" y="120" textAnchor="middle" fontSize="8" fill="#64748b">RDB, CSV</text>
+      </g>
+      {/* Semi-structured */}
+      <g>
+        <rect x="150" y="30" width="120" height="105" fill="#fef3c7" rx="8" stroke="#f59e0b" strokeWidth="2" />
+        <text x="210" y="48" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b45309">半構造化</text>
+        <text x="210" y="68" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="monospace">{"{"}</text>
+        <text x="210" y="80" textAnchor="middle" fontSize="8" fill="#334155" fontFamily="monospace">"name": "太郎"</text>
+        <text x="210" y="92" textAnchor="middle" fontSize="8" fill="#334155" fontFamily="monospace">"age": 25</text>
+        <text x="210" y="104" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="monospace">{"}"}</text>
+        <text x="210" y="120" textAnchor="middle" fontSize="8" fill="#64748b">JSON, XML</text>
+      </g>
+      {/* Unstructured */}
+      <g>
+        <rect x="290" y="30" width="120" height="105" fill="#fee2e2" rx="8" stroke="#dc2626" strokeWidth="2" />
+        <text x="350" y="48" textAnchor="middle" fontSize="10" fontWeight="700" fill="#dc2626">非構造化</text>
+        {/* Icons for text, image, audio */}
+        <rect x="302" y="58" width="28" height="20" fill="#f1f5f9" rx="3" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="316" y="72" textAnchor="middle" fontSize="7" fill="#64748b">TEXT</text>
+        <rect x="336" y="58" width="28" height="20" fill="#f1f5f9" rx="3" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="350" y="72" textAnchor="middle" fontSize="7" fill="#64748b">IMG</text>
+        <rect x="370" y="58" width="28" height="20" fill="#f1f5f9" rx="3" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="384" y="72" textAnchor="middle" fontSize="7" fill="#64748b">音声</text>
+        <rect x="302" y="84" width="28" height="20" fill="#f1f5f9" rx="3" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="316" y="98" textAnchor="middle" fontSize="7" fill="#64748b">動画</text>
+        <rect x="336" y="84" width="28" height="20" fill="#f1f5f9" rx="3" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="350" y="98" textAnchor="middle" fontSize="7" fill="#64748b">SNS</text>
+        <rect x="370" y="84" width="28" height="20" fill="#f1f5f9" rx="3" stroke="#94a3b8" strokeWidth="0.8" />
+        <text x="384" y="98" textAnchor="middle" fontSize="7" fill="#64748b">IoT</text>
+        <text x="350" y="120" textAnchor="middle" fontSize="8" fill="#64748b">テキスト, 画像, 音声</text>
+      </g>
+      {/* Bottom bar */}
+      <rect x="30" y="148" width="360" height="24" fill="#fee2e2" rx="6" stroke="#dc2626" strokeWidth="1.5" />
+      <text x="210" y="165" textAnchor="middle" fontSize="10" fontWeight="700" fill="#dc2626">世界のデータの80%以上が非構造化データ</text>
+    </svg>
+  );
+}
+
+function FlowchartSymbolsDiagram() {
+  return (
+    <svg viewBox="0 0 420 220" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">フローチャート記号</text>
+      {/* Symbols row */}
+      {/* Oval - Start/End */}
+      <g>
+        <ellipse cx="55" cy="45" rx="40" ry="16" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" />
+        <text x="55" y="49" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">開始/終了</text>
+        <text x="55" y="72" textAnchor="middle" fontSize="8" fill="#64748b">楕円</text>
+      </g>
+      {/* Rectangle - Process */}
+      <g>
+        <rect x="120" y="30" width="80" height="30" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="2" />
+        <text x="160" y="49" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">処理</text>
+        <text x="160" y="72" textAnchor="middle" fontSize="8" fill="#64748b">長方形</text>
+      </g>
+      {/* Diamond - Decision */}
+      <g>
+        <polygon points="265,30 305,45 265,60 225,45" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" />
+        <text x="265" y="49" textAnchor="middle" fontSize="8" fontWeight="600" fill="#b45309">条件分岐</text>
+        <text x="265" y="72" textAnchor="middle" fontSize="8" fill="#64748b">ひし形</text>
+      </g>
+      {/* Parallelogram - I/O */}
+      <g>
+        <polygon points="345,30 405,30 395,60 335,60" fill="#f3e8ff" stroke="#9333ea" strokeWidth="1.5" />
+        <text x="370" y="49" textAnchor="middle" fontSize="9" fontWeight="600" fill="#9333ea">入出力</text>
+        <text x="370" y="72" textAnchor="middle" fontSize="8" fill="#64748b">平行四辺形</text>
+      </g>
+      {/* Example flowchart */}
+      <text x="210" y="95" textAnchor="middle" fontSize="10" fontWeight="700" fill="#334155">例: 正負判定フロー</text>
+      <defs>
+        <marker id="arrowFC" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8" />
+        </marker>
+      </defs>
+      {/* Start */}
+      <ellipse cx="55" cy="130" rx="32" ry="13" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" />
+      <text x="55" y="134" textAnchor="middle" fontSize="9" fontWeight="600" fill="#16a34a">開始</text>
+      <line x1="87" y1="130" x2="108" y2="130" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowFC)" />
+      {/* Input */}
+      <polygon points="125,118 185,118 178,142 118,142" fill="#f3e8ff" stroke="#9333ea" strokeWidth="1.5" />
+      <text x="152" y="134" textAnchor="middle" fontSize="8" fontWeight="600" fill="#9333ea">数値入力</text>
+      <line x1="185" y1="130" x2="206" y2="130" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowFC)" />
+      {/* Decision */}
+      <polygon points="250,112 290,130 250,148 210,130" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" />
+      <text x="250" y="134" textAnchor="middle" fontSize="8" fontWeight="600" fill="#b45309">&gt;0?</text>
+      {/* Yes path */}
+      <line x1="290" y1="130" x2="315" y2="130" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowFC)" />
+      <text x="302" y="125" fontSize="8" fill="#16a34a" fontWeight="600">Yes</text>
+      <rect x="318" y="118" width="42" height="24" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="2" />
+      <text x="339" y="134" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">正</text>
+      <line x1="360" y1="130" x2="375" y2="130" stroke="#94a3b8" strokeWidth="1" />
+      {/* No path */}
+      <line x1="250" y1="148" x2="250" y2="168" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowFC)" />
+      <text x="260" y="162" fontSize="8" fill="#dc2626" fontWeight="600">No</text>
+      <rect x="229" y="170" width="42" height="24" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" rx="2" />
+      <text x="250" y="186" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2563eb">負</text>
+      <line x1="271" y1="182" x2="375" y2="182" stroke="#94a3b8" strokeWidth="1" />
+      {/* Merge and End */}
+      <line x1="375" y1="130" x2="375" y2="182" stroke="#94a3b8" strokeWidth="1" />
+      <line x1="375" y1="156" x2="395" y2="156" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowFC)" />
+      <ellipse cx="410" cy="156" rx="5" ry="5" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" />
+      <text x="210" y="212" textAnchor="middle" fontSize="9" fill="#64748b">JIS X 0121 に準拠した基本記号</text>
+    </svg>
+  );
+}
+
+function AlgorithmComplexityDiagram() {
+  /* Approximate curves for visualization */
+  const maxN = 50, maxY = 130, chartX = 60, chartY = 25, chartW = 300, chartH = 130;
+  const scaleX = (n: number) => chartX + (n / maxN) * chartW;
+  const scaleY = (v: number) => chartY + chartH - Math.min(v, maxY) / maxY * chartH;
+
+  const curves: { label: string; color: string; points: string }[] = [
+    {
+      label: "O(1)",
+      color: "#16a34a",
+      points: Array.from({ length: 50 }, (_, i) => {
+        const n = i + 1;
+        return `${scaleX(n)},${scaleY(5)}`;
+      }).join(" "),
+    },
+    {
+      label: "O(log n)",
+      color: "#2563eb",
+      points: Array.from({ length: 50 }, (_, i) => {
+        const n = i + 1;
+        return `${scaleX(n)},${scaleY(Math.log2(n) * 5)}`;
+      }).join(" "),
+    },
+    {
+      label: "O(n)",
+      color: "#f59e0b",
+      points: Array.from({ length: 50 }, (_, i) => {
+        const n = i + 1;
+        return `${scaleX(n)},${scaleY(n * 2.2)}`;
+      }).join(" "),
+    },
+    {
+      label: "O(n log n)",
+      color: "#9333ea",
+      points: Array.from({ length: 50 }, (_, i) => {
+        const n = i + 1;
+        return `${scaleX(n)},${scaleY(n * Math.log2(n) * 0.5)}`;
+      }).join(" "),
+    },
+    {
+      label: "O(n²)",
+      color: "#dc2626",
+      points: Array.from({ length: 50 }, (_, i) => {
+        const n = i + 1;
+        return `${scaleX(n)},${scaleY((n * n) * 0.05)}`;
+      }).join(" "),
+    },
+  ];
+
+  return (
+    <svg viewBox="0 0 420 200" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">計算量（オーダー記法）</text>
+      {/* Axes */}
+      <line x1={chartX} y1={chartY} x2={chartX} y2={chartY + chartH} stroke="#334155" strokeWidth="1.5" />
+      <line x1={chartX} y1={chartY + chartH} x2={chartX + chartW} y2={chartY + chartH} stroke="#334155" strokeWidth="1.5" />
+      <text x={chartX + chartW / 2} y={chartY + chartH + 16} textAnchor="middle" fontSize="9" fill="#334155">データ数 (n)</text>
+      <text x={chartX - 8} y={chartY + chartH / 2} textAnchor="middle" fontSize="8" fill="#334155" transform={`rotate(-90,${chartX - 8},${chartY + chartH / 2})`}>処理時間</text>
+      {/* Curves */}
+      {curves.map((c, i) => (
+        <polyline key={i} points={c.points} fill="none" stroke={c.color} strokeWidth="2" />
+      ))}
+      {/* Legend */}
+      {curves.map((c, i) => (
+        <g key={i}>
+          <line x1="374" y1={30 + i * 16} x2="392" y2={30 + i * 16} stroke={c.color} strokeWidth="2" />
+          <text x="396" y={34 + i * 16} fontSize="8" fontWeight="600" fill={c.color}>{c.label}</text>
+        </g>
+      ))}
+      {/* Annotation */}
+      <rect x="80" y="172" width="260" height="20" fill="#fee2e2" rx="4" />
+      <text x="210" y="186" textAnchor="middle" fontSize="9" fontWeight="600" fill="#dc2626">n=10,000: O(n)=1万回 / O(n²)=1億回</text>
+    </svg>
+  );
+}
+
 /* ================================================================
    Export map
    ================================================================ */
@@ -579,4 +872,10 @@ export const deDiagrams: Record<string, () => ReactNode> = {
   "de-topic-21": ErDiagramBasic,
   "de-topic-29": LakehouseArchitectureDiagram,
   "de-topic-33": MessageQueueDiagram,
+  "de-topic-11": GitBranchDiagram,
+  "de-topic-20": CiaTriangleDiagram,
+  "de-topic-26": NoSqlTypesDiagram,
+  "de-topic-51": StructuredVsUnstructuredDiagram,
+  "de-topic-53": FlowchartSymbolsDiagram,
+  "de-topic-54": AlgorithmComplexityDiagram,
 };

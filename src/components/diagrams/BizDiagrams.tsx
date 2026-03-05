@@ -386,6 +386,204 @@ function AbTestDiagram() {
   );
 }
 
+function BusinessFrameworksDiagram() {
+  return (
+    <svg viewBox="0 0 420 200" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">ビジネスフレームワーク</text>
+      {/* SWOT - top left */}
+      <g transform="translate(10,24)">
+        <text x="95" y="12" textAnchor="middle" fontSize="10" fontWeight="700" fill="#2563eb">SWOT分析</text>
+        <rect x="20" y="18" width="70" height="30" fill="#dbeafe" rx="4" stroke="#2563eb" strokeWidth="1" />
+        <text x="55" y="37" textAnchor="middle" fontSize="8" fontWeight="600" fill="#2563eb">S 強み</text>
+        <rect x="92" y="18" width="70" height="30" fill="#fee2e2" rx="4" stroke="#dc2626" strokeWidth="1" />
+        <text x="127" y="37" textAnchor="middle" fontSize="8" fontWeight="600" fill="#dc2626">W 弱み</text>
+        <rect x="20" y="50" width="70" height="30" fill="#dcfce7" rx="4" stroke="#16a34a" strokeWidth="1" />
+        <text x="55" y="69" textAnchor="middle" fontSize="8" fontWeight="600" fill="#16a34a">O 機会</text>
+        <rect x="92" y="50" width="70" height="30" fill="#fef3c7" rx="4" stroke="#f59e0b" strokeWidth="1" />
+        <text x="127" y="69" textAnchor="middle" fontSize="8" fontWeight="600" fill="#b45309">T 脅威</text>
+      </g>
+      {/* 3C - top right */}
+      <g transform="translate(220,24)">
+        <text x="90" y="12" textAnchor="middle" fontSize="10" fontWeight="700" fill="#16a34a">3C分析</text>
+        <circle cx="60" cy="52" r="24" fill="#dbeafe" stroke="#2563eb" strokeWidth="1.5" opacity="0.7" />
+        <text x="60" y="48" textAnchor="middle" fontSize="7" fontWeight="700" fill="#2563eb">Customer</text>
+        <text x="60" y="58" textAnchor="middle" fontSize="7" fill="#2563eb">顧客</text>
+        <circle cx="110" cy="52" r="24" fill="#dcfce7" stroke="#16a34a" strokeWidth="1.5" opacity="0.7" />
+        <text x="110" y="48" textAnchor="middle" fontSize="7" fontWeight="700" fill="#16a34a">Company</text>
+        <text x="110" y="58" textAnchor="middle" fontSize="7" fill="#16a34a">自社</text>
+        <circle cx="85" cy="28" r="24" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" opacity="0.7" />
+        <text x="85" y="24" textAnchor="middle" fontSize="7" fontWeight="700" fill="#b45309">Competitor</text>
+        <text x="85" y="34" textAnchor="middle" fontSize="7" fill="#b45309">競合</text>
+      </g>
+      {/* 4P - bottom left */}
+      <g transform="translate(10,115)">
+        <text x="95" y="8" textAnchor="middle" fontSize="10" fontWeight="700" fill="#9333ea">4P分析</text>
+        {[
+          { label: "Product", sub: "製品", color: "#2563eb", bg: "#dbeafe" },
+          { label: "Price", sub: "価格", color: "#16a34a", bg: "#dcfce7" },
+          { label: "Place", sub: "流通", color: "#f59e0b", bg: "#fef3c7" },
+          { label: "Promotion", sub: "販促", color: "#dc2626", bg: "#fee2e2" },
+        ].map((p, i) => (
+          <g key={i}>
+            <rect x={10 + i * 44} y="14" width="40" height="38" fill={p.bg} rx="4" stroke={p.color} strokeWidth="1" />
+            <text x={30 + i * 44} y="30" textAnchor="middle" fontSize="7" fontWeight="700" fill={p.color}>{p.label}</text>
+            <text x={30 + i * 44} y="42" textAnchor="middle" fontSize="8" fill="#64748b">{p.sub}</text>
+          </g>
+        ))}
+      </g>
+      {/* PEST - bottom right */}
+      <g transform="translate(220,115)">
+        <text x="90" y="8" textAnchor="middle" fontSize="10" fontWeight="700" fill="#dc2626">PEST分析</text>
+        {[
+          { label: "Political", sub: "政治", color: "#2563eb", bg: "#dbeafe" },
+          { label: "Economic", sub: "経済", color: "#16a34a", bg: "#dcfce7" },
+          { label: "Social", sub: "社会", color: "#f59e0b", bg: "#fef3c7" },
+          { label: "Tech", sub: "技術", color: "#9333ea", bg: "#f3e8ff" },
+        ].map((p, i) => (
+          <g key={i}>
+            <rect x={10 + i * 44} y="14" width="40" height="38" fill={p.bg} rx="4" stroke={p.color} strokeWidth="1" />
+            <text x={30 + i * 44} y="30" textAnchor="middle" fontSize="7" fontWeight="700" fill={p.color}>{p.label}</text>
+            <text x={30 + i * 44} y="42" textAnchor="middle" fontSize="8" fill="#64748b">{p.sub}</text>
+          </g>
+        ))}
+      </g>
+      <text x="210" y="195" textAnchor="middle" fontSize="9" fill="#64748b">状況に応じて適切なフレームワークを選択</text>
+    </svg>
+  );
+}
+
+function HypothesisTestingFlowDiagram() {
+  const steps = [
+    { label: "仮説設定", color: "#2563eb", bg: "#dbeafe" },
+    { label: "データ収集", color: "#16a34a", bg: "#dcfce7" },
+    { label: "分析", color: "#f59e0b", bg: "#fef3c7" },
+    { label: "検証", color: "#9333ea", bg: "#f3e8ff" },
+    { label: "意思決定", color: "#dc2626", bg: "#fee2e2" },
+  ];
+  return (
+    <svg viewBox="0 0 420 155" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">仮説検証プロセス</text>
+      <defs>
+        <marker id="arrowBizHyp" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8" />
+        </marker>
+        <marker id="arrowBizHypRed" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#dc2626" />
+        </marker>
+      </defs>
+      {/* Main flow */}
+      {steps.map((s, i) => {
+        const x = 10 + i * 82;
+        return (
+          <g key={i}>
+            <rect x={x} y="30" width="72" height="40" fill={s.bg} rx="8" stroke={s.color} strokeWidth="2" />
+            <text x={x + 36} y="54" textAnchor="middle" fontSize="9" fontWeight="700" fill={s.color}>{s.label}</text>
+            {i < 4 && (
+              <line x1={x + 72} y1="50" x2={x + 82} y2="50" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrowBizHyp)" />
+            )}
+          </g>
+        );
+      })}
+      {/* Feedback loop: 検証 → 仮説設定 */}
+      <path d="M 298 70 L 298 100 Q 298 110 288 110 L 56 110 Q 46 110 46 100 L 46 72" fill="none" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" markerEnd="url(#arrowBizHypRed)" />
+      <rect x="130" y="100" width="80" height="18" fill="#fee2e2" rx="4" />
+      <text x="170" y="113" textAnchor="middle" fontSize="8" fontWeight="600" fill="#dc2626">棄却時に再設定</text>
+      {/* Labels */}
+      <text x="370" y="82" textAnchor="middle" fontSize="8" fill="#16a34a" fontWeight="600">採用</text>
+      <text x="210" y="145" textAnchor="middle" fontSize="9" fill="#64748b">仮説が棄却された場合、新たな仮説を設定して再検証</text>
+    </svg>
+  );
+}
+
+function CohortAnalysisDiagram() {
+  const months = ["1月", "2月", "3月"];
+  const periods = ["0", "1", "2", "3"];
+  const data = [
+    [100, 60, 40, 25],
+    [100, 55, 35, 22],
+    [100, 50, 30, 18],
+  ];
+  const getColor = (val: number) => {
+    if (val >= 80) return "#1e40af";
+    if (val >= 50) return "#2563eb";
+    if (val >= 30) return "#60a5fa";
+    return "#bfdbfe";
+  };
+  const getTextColor = (val: number) => val >= 50 ? "white" : "#334155";
+  return (
+    <svg viewBox="0 0 420 180" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">コホート分析（リテンション）</text>
+      {/* Column headers */}
+      <text x="110" y="38" textAnchor="middle" fontSize="8" fontWeight="600" fill="#64748b">獲得月</text>
+      {periods.map((p, i) => (
+        <text key={i} x={180 + i * 60} y="38" textAnchor="middle" fontSize="8" fontWeight="600" fill="#64748b">{p}ヶ月後</text>
+      ))}
+      {/* Rows */}
+      {months.map((m, ri) => (
+        <g key={ri}>
+          <text x="110" y={62 + ri * 34} textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">{m}コホート</text>
+          {data[ri].map((val, ci) => (
+            <g key={ci}>
+              <rect x={150 + ci * 60} y={46 + ri * 34} width="56" height="26" fill={getColor(val)} rx="4" />
+              <text x={178 + ci * 60} y={63 + ri * 34} textAnchor="middle" fontSize="10" fontWeight="700" fill={getTextColor(val)}>{val}%</text>
+            </g>
+          ))}
+        </g>
+      ))}
+      {/* Legend */}
+      <g transform="translate(60,155)">
+        {[
+          { label: "高", color: "#1e40af" },
+          { label: "中", color: "#60a5fa" },
+          { label: "低", color: "#bfdbfe" },
+        ].map((l, i) => (
+          <g key={i}>
+            <rect x={i * 60} y="0" width="14" height="12" fill={l.color} rx="2" />
+            <text x={18 + i * 60} y="10" fontSize="8" fill="#64748b">{l.label}リテンション</text>
+          </g>
+        ))}
+      </g>
+      <text x="320" y="166" textAnchor="middle" fontSize="9" fill="#64748b">時間経過による離脱率を可視化</text>
+    </svg>
+  );
+}
+
+function DxStagesDiagram() {
+  const stages = [
+    { label: "デジタイゼーション", sub: "アナログ → デジタル化", desc: "紙の帳票を電子化", color: "#2563eb", bg: "#dbeafe" },
+    { label: "デジタライゼーション", sub: "業務プロセスのデジタル化", desc: "ワークフロー自動化", color: "#f59e0b", bg: "#fef3c7" },
+    { label: "DX", sub: "ビジネスモデル変革", desc: "新たな価値創出", color: "#dc2626", bg: "#fee2e2" },
+  ];
+  return (
+    <svg viewBox="0 0 420 185" className="topic-diagram">
+      <text x="210" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#334155">DX推進の3段階</text>
+      <defs>
+        <marker id="arrowBizDX" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#334155" />
+        </marker>
+      </defs>
+      {/* Ascending steps */}
+      {stages.map((s, i) => {
+        const x = 20 + i * 135;
+        const y = 110 - i * 30;
+        const h = 60 + i * 30;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width="120" height={h} fill={s.bg} rx="8" stroke={s.color} strokeWidth="2" />
+            <text x={x + 60} y={y + 20} textAnchor="middle" fontSize="9" fontWeight="800" fill={s.color}>Stage {i + 1}</text>
+            <text x={x + 60} y={y + 36} textAnchor="middle" fontSize="9" fontWeight="700" fill={s.color}>{s.label}</text>
+            <text x={x + 60} y={y + 52} textAnchor="middle" fontSize="8" fill="#64748b">{s.sub}</text>
+            <text x={x + 60} y={y + 66} textAnchor="middle" fontSize="7" fill="#94a3b8">{s.desc}</text>
+          </g>
+        );
+      })}
+      {/* Progression arrow */}
+      <line x1="50" y1="175" x2="370" y2="175" stroke="#334155" strokeWidth="2" markerEnd="url(#arrowBizDX)" />
+      <text x="210" y="185" textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">DX推進レベル →</text>
+    </svg>
+  );
+}
+
 /* ================================================================
    Export map
    ================================================================ */
@@ -402,4 +600,8 @@ export const bizDiagrams: Record<string, () => ReactNode> = {
   "biz-topic-13": AnalyticsFourStages,
   "biz-topic-21": AgileScrumDiagram,
   "biz-topic-26": AbTestDiagram,
+  "biz-topic-20": BusinessFrameworksDiagram,
+  "biz-topic-32": HypothesisTestingFlowDiagram,
+  "biz-topic-45": CohortAnalysisDiagram,
+  "biz-topic-50": DxStagesDiagram,
 };
