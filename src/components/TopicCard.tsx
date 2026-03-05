@@ -71,15 +71,26 @@ export function TopicCard({ topic, isRead, onToggleRead }: Props) {
 
           <p className="topic-detail">{topic.detail}</p>
 
-          {topic.relatedQuestionIds.length > 0 && (
-            <button
-              className="btn btn-outline"
-              onClick={handleQuiz}
-              type="button"
-            >
-              関連問題を解く ({topic.relatedQuestionIds.length}問)
-            </button>
-          )}
+          <div className="topic-card-actions">
+            {topic.relatedQuestionIds.length > 0 && (
+              <button
+                className="btn btn-outline"
+                onClick={handleQuiz}
+                type="button"
+              >
+                関連問題を解く ({topic.relatedQuestionIds.length}問)
+              </button>
+            )}
+            {onToggleRead && (
+              <button
+                className={`btn btn-learned${isRead ? " btn-learned-on" : ""}`}
+                onClick={() => onToggleRead(topic.id)}
+                type="button"
+              >
+                {isRead ? "✓ 学習済" : "学習済チェック"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

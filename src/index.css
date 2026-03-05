@@ -642,6 +642,33 @@ body {
   border-color: var(--color-success);
 }
 
+.topic-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-learned {
+  background: transparent;
+  color: var(--color-success);
+  border: 2px solid var(--color-success);
+  font-weight: 600;
+}
+
+.btn-learned:hover {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.btn-learned-on {
+  background: var(--color-success);
+  color: #fff;
+  border-color: var(--color-success);
+}
+
+.btn-learned-on:hover {
+  opacity: 0.85;
+}
+
 .topic-card-read > .topic-card-header {
   background: rgba(22, 163, 74, 0.06);
 }
