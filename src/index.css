@@ -646,6 +646,21 @@ body {
   background: rgba(22, 163, 74, 0.06);
 }
 
+.topic-id-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-family: monospace;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.6;
+}
+
 .topic-level-badge {
   display: inline-block;
   padding: 1px 8px;

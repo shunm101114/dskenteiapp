@@ -9,6 +9,13 @@ interface Props {
   onToggleRead?: (id: string) => void;
 }
 
+function shortId(id: string): string {
+  const m = id.match(/^(\w+)-topic-(\d+)$/);
+  if (!m) return id;
+  const prefix = m[1].toUpperCase();
+  return `${prefix}-${m[2]}`;
+}
+
 export function TopicCard({ topic, isRead, onToggleRead }: Props) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -40,6 +47,7 @@ export function TopicCard({ topic, isRead, onToggleRead }: Props) {
               {isRead && "✓"}
             </span>
           )}
+          <span className="topic-id-badge">{shortId(topic.id)}</span>
           <span>{topic.title}</span>
           {topic.level === "advanced" && (
             <span className="topic-level-badge">発展</span>
