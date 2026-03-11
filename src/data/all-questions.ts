@@ -10,6 +10,9 @@ import { questionsDsCoverage } from "./questions-ds-coverage";
 import { questionsDeCoverage } from "./questions-de-coverage";
 import { questionsBizCoverage } from "./questions-biz-coverage";
 import { questionsExtraCoverage } from "./questions-extra-coverage";
+import { questionsDsRound } from "./questions-ds-round";
+import { questionsDeRound } from "./questions-de-round";
+import { questionsBizRound } from "./questions-biz-round";
 
 export const allQuestions: Question[] = [
   ...questions,
@@ -23,6 +26,9 @@ export const allQuestions: Question[] = [
   ...questionsDeCoverage,
   ...questionsBizCoverage,
   ...questionsExtraCoverage,
+  ...questionsDsRound,
+  ...questionsDeRound,
+  ...questionsBizRound,
 ];
 
 /** Category prefix for question numbering */
