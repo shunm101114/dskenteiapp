@@ -6,6 +6,10 @@ import { questionsMathAdvanced } from "./questions-math-advanced";
 import { questionsMlAdvanced } from "./questions-ml-advanced";
 import { questionsDeAdvanced } from "./questions-de-advanced";
 import { questionsBizAdvanced } from "./questions-biz-advanced";
+import { questionsDsCoverage } from "./questions-ds-coverage";
+import { questionsDeCoverage } from "./questions-de-coverage";
+import { questionsBizCoverage } from "./questions-biz-coverage";
+import { questionsExtraCoverage } from "./questions-extra-coverage";
 
 export const allQuestions: Question[] = [
   ...questions,
@@ -15,6 +19,10 @@ export const allQuestions: Question[] = [
   ...questionsMlAdvanced,
   ...questionsDeAdvanced,
   ...questionsBizAdvanced,
+  ...questionsDsCoverage,
+  ...questionsDeCoverage,
+  ...questionsBizCoverage,
+  ...questionsExtraCoverage,
 ];
 
 /** Category prefix for question numbering */
