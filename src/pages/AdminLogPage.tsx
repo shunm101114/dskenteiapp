@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { Navigate } from "react-router";
 
 interface Session {
   sessionId: string;
@@ -27,18 +29,24 @@ function fmtDate(ts: number): string {
 }
 
 export function AdminLogPage() {
+  const { isAdmin } = useAuth();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState<DaysFilter>(7);
 
   useEffect(() => {
+    if (!isAdmin) return;
     setLoading(true);
     fetch(`/api/access-log?days=${days}`)
       .then((r) => r.json())
       .then((data) => setSessions(data.sessions ?? []))
       .catch(() => setSessions([]))
       .finally(() => setLoading(false));
-  }, [days]);
+  }, [days, isAdmin]);
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
+  }
 
   // Per-user summary
   const userSummary = useMemo(() => {

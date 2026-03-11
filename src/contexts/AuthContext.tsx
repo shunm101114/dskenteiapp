@@ -3,8 +3,11 @@ import type { ReactNode } from "react";
 
 const AUTH_KEY = "ds-kentei-current-user";
 
+const ADMIN_USER_ID = "test";
+
 interface AuthContextValue {
   userId: string | null;
+  isAdmin: boolean;
   login: (id: string) => void;
   logout: () => void;
 }
@@ -28,8 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUserId(null);
   }, []);
 
+  const isAdmin = userId === ADMIN_USER_ID;
+
   return (
-    <AuthContext.Provider value={{ userId, login, logout }}>
+    <AuthContext.Provider value={{ userId, isAdmin, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

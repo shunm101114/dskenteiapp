@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router";
 import { useAuth } from "./contexts/AuthContext";
 
 export default function App() {
-  const { userId, logout } = useAuth();
+  const { userId, isAdmin, logout } = useAuth();
 
   return (
     <>
@@ -44,6 +44,7 @@ export default function App() {
           <NavLink to="/study">学習</NavLink>
           <NavLink to="/progress">成績</NavLink>
           <NavLink to="/review">復習</NavLink>
+          {isAdmin && <NavLink to="/admin/logs">管理</NavLink>}
         </div>
       </nav>
       <main className="app-main">
